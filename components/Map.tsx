@@ -20,7 +20,7 @@ const MAP_STYLES = [
 const CIRCLE_PATH = 0 as unknown as google.maps.SymbolPath;
 
 export default function Map({ attraction, userPosition }: MapProps) {
-  const { status, triggeredPinId, visitedPinIds, triggerPin } = useGuideStore();
+  const { status, triggeredPinId, visitedPinIds, triggerPinManual } = useGuideStore();
   const mapRef = useRef<google.maps.Map | null>(null);
 
   const { isLoaded } = useJsApiLoader({
@@ -79,7 +79,7 @@ export default function Map({ attraction, userPosition }: MapProps) {
               strokeWeight: 2,
             }}
             onClick={() => {
-              if (isActive && !isVisited) triggerPin(pin.id);
+              if (isActive) triggerPinManual(pin.id);
             }}
           />
         );

@@ -2,22 +2,18 @@ import { create } from 'zustand';
 import { Attraction, GuideStatus, UserPosition } from './types';
 
 interface GuideStore {
-  // Data
   attraction: Attraction | null;
   setAttraction: (a: Attraction) => void;
 
-  // GPS
   userPosition: UserPosition | null;
   setUserPosition: (pos: UserPosition) => void;
 
-  // State machine
   status: GuideStatus;
-  aBlockIndex: number;       // current A block index (attraction-level)
-  triggeredPinId: string | null;  // pin whose B is playing / about to play
-  pendingPinId: string | null;    // pin triggered while A block still playing
-  visitedPinIds: string[];        // pins already visited (avoid re-triggering)
+  aBlockIndex: number;
+  triggeredPinId: string | null;
+  pendingPinId: string | null;
+  visitedPinIds: string[]; // GPS-auto visited — won't re-trigger automatically
 
-  // Player UI state
   isPlaying: boolean;
   progress: number;
   duration: number;
@@ -25,19 +21,20 @@ interface GuideStore {
   setProgress: (v: number) => void;
   setDuration: (v: number) => void;
 
-  // Player controls — registered by AudioEngine
   seekTo: (ratio: number) => void;
   togglePause: () => void;
   setPlayerControls: (seek: (r: number) => void, toggle: () => void) => void;
 
-  // Actions
   startGuide: () => void;
   resumeGuide: () => void;
+  prevBlock: () => void;
+  nextBlock: () => void;
 
-  // GPS or pin click → trigger B for a specific pin
+  // GPS arrival → only triggers if pin not in visitedPinIds
   triggerPin: (pinId: string) => void;
+  // Manual pin click → always triggers regardless of visitedPinIds
+  triggerPinManual: (pinId: string) => void;
 
-  // Called by AudioEngine on segment end
   onABlockEnd: () => void;
   onArrivalEnd: () => void;
   onBBlockEnd: () => void;
@@ -80,24 +77,57 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
     if (nextIndex < attraction.aBlocks.length) {
       set({ status: 'A_PLAYING', aBlockIndex: nextIndex, triggeredPinId: null });
     } else {
-      set({ status: 'A_LOOPING', aBlockIndex: 0, triggeredPinId: null });
+      set({ status: 'GUIDE_ENDED', triggeredPinId: null });
     }
+  },
+
+  prevBlock: () => {
+    const { status, aBlockIndex } = get();
+    if (status !== 'A_PLAYING' && status !== 'GUIDE_ENDED') return;
+    if (aBlockIndex <= 0) return;
+    set({ status: 'A_PLAYING', aBlockIndex: aBlockIndex - 1 });
+  },
+
+  nextBlock: () => {
+    const { attraction, status, aBlockIndex } = get();
+    if (!attraction) return;
+    if (status !== 'A_PLAYING' && status !== 'GUIDE_ENDED') return;
+    if (aBlockIndex >= attraction.aBlocks.length - 1) return;
+    set({ status: 'A_PLAYING', aBlockIndex: aBlockIndex + 1 });
   },
 
   triggerPin: (pinId: string) => {
     const { status, visitedPinIds } = get();
+    // GPS: skip if already auto-visited
     if (visitedPinIds.includes(pinId)) return;
 
-    if (status === 'A_PLAYING' || status === 'A_LOOPING') {
-      // Wait for current A block to finish
+    if (status === 'A_PLAYING') {
       set({ pendingPinId: pinId });
-    } else if (status === 'B_ENDED') {
-      // User tapped another pin while on resume screen — go directly to arrival
+    } else if (status === 'B_ENDED' || status === 'GUIDE_ENDED') {
       set({
         status: 'ARRIVAL',
         triggeredPinId: pinId,
         pendingPinId: null,
         visitedPinIds: [...visitedPinIds, pinId],
+      });
+    }
+  },
+
+  triggerPinManual: (pinId: string) => {
+    const { status, visitedPinIds } = get();
+    if (status === 'ARRIVAL' || status === 'B_PLAYING') return;
+
+    if (status === 'A_PLAYING') {
+      set({ pendingPinId: pinId });
+    } else {
+      // B_ENDED, GUIDE_ENDED, IDLE — go directly to arrival
+      set({
+        status: 'ARRIVAL',
+        triggeredPinId: pinId,
+        pendingPinId: null,
+        visitedPinIds: visitedPinIds.includes(pinId)
+          ? visitedPinIds
+          : [...visitedPinIds, pinId],
       });
     }
   },
@@ -120,7 +150,8 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
     if (nextIndex < attraction.aBlocks.length) {
       set({ status: 'A_PLAYING', aBlockIndex: nextIndex });
     } else {
-      set({ status: 'A_LOOPING', aBlockIndex: 0 });
+      // All A blocks played once — stop auto-play
+      set({ status: 'GUIDE_ENDED' });
     }
   },
 

@@ -21,17 +21,17 @@ export interface Attraction {
   thumbnail?: string;
   center: { lat: number; lng: number };
   defaultZoom: number;
-  aBlocks: AudioBlock[]; // attraction-level narrative — plays continuously
+  aBlocks: AudioBlock[];
   pins: Pin[];
 }
 
 export type GuideStatus =
   | 'IDLE'
   | 'A_PLAYING'
-  | 'A_LOOPING'  // all A blocks exhausted, looping first block
-  | 'ARRIVAL'    // playing arrival announcement for triggeredPinId
-  | 'B_PLAYING'  // playing B guide for triggeredPinId
-  | 'B_ENDED';   // B done — waiting for user to press Resume
+  | 'GUIDE_ENDED' // all A blocks played once — no more auto-play
+  | 'ARRIVAL'
+  | 'B_PLAYING'
+  | 'B_ENDED';
 
 export interface UserPosition {
   lat: number;
