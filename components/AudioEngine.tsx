@@ -79,7 +79,6 @@ export default function AudioEngine() {
 
     const howl = new Howl({
       src: [src],
-      html5: true,
       onend: onEnd,
       onplay: () => {
         setIsPlaying(true);
@@ -121,7 +120,9 @@ export default function AudioEngine() {
       () => {
         const h = howlRef.current;
         if (!h) return;
-        if (h.playing()) {
+        // Use store's isPlaying — more reliable than h.playing() on iOS
+        const playing = useGuideStore.getState().isPlaying;
+        if (playing) {
           h.pause();
         } else {
           h.play();

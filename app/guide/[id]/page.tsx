@@ -21,6 +21,15 @@ export default function GuidePage() {
     if (attraction) setAttraction(attraction);
   }, [attraction, setAttraction]);
 
+  const handleStart = () => {
+    // iOS requires AudioContext resume from a direct user gesture
+    if (typeof window !== 'undefined') {
+      const Howler = (window as unknown as { Howler?: { ctx?: AudioContext } }).Howler;
+      Howler?.ctx?.resume();
+    }
+    startGuide();
+  };
+
   if (!attraction) return notFound();
 
   return (
@@ -42,7 +51,7 @@ export default function GuidePage() {
       <AudioEngine />
 
       {/* Bottom player */}
-      <PlayerBar attraction={attraction} onStart={startGuide} />
+      <PlayerBar attraction={attraction} onStart={handleStart} />
     </main>
   );
 }
