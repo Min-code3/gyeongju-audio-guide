@@ -16,6 +16,23 @@ export default function AudioEngine() {
   const howlRef = useRef<Howl | null>(null);
   const rafRef = useRef<number>(0);
 
+  // ─── iOS AudioContext unlock ───────────────────────────────────────────────
+  // iOS suspends AudioContext on every non-gesture event. Keep it running
+  // by resuming on every user touch.
+  useEffect(() => {
+    const resume = () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const ctx = (window as any).Howler?.ctx as AudioContext | undefined;
+      if (ctx && ctx.state === 'suspended') ctx.resume();
+    };
+    document.addEventListener('touchstart', resume, { passive: true });
+    document.addEventListener('click', resume);
+    return () => {
+      document.removeEventListener('touchstart', resume);
+      document.removeEventListener('click', resume);
+    };
+  }, []);
+
   // ─── GPS watch ────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!navigator.geolocation) return;
