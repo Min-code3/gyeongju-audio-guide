@@ -147,7 +147,12 @@ export default function AudioEngine() {
       },
     );
 
-    howl.play();
+    (async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const ctx = (window as any).Howler?.ctx as AudioContext | undefined;
+      if (ctx?.state === 'suspended') await ctx.resume();
+      if (howlRef.current === howl) howl.play();
+    })();
 
     return () => {
       cancelAnimationFrame(rafRef.current);
