@@ -14,7 +14,6 @@ export default function AudioEngine() {
   } = useGuideStore();
 
   const howlRef = useRef<Howl | null>(null);
-  const soundIdRef = useRef<number | null>(null);
   const rafRef = useRef<number>(0);
 
   // ─── GPS watch ────────────────────────────────────────────────────────────
@@ -47,13 +46,13 @@ export default function AudioEngine() {
   useEffect(() => {
     if (!attraction) return;
 
+    // Cleanup previous
     cancelAnimationFrame(rafRef.current);
     if (howlRef.current) {
       howlRef.current.stop();
       howlRef.current.unload();
       howlRef.current = null;
     }
-    soundIdRef.current = null;
 
     let src: string | null = null;
     let onEnd: () => void = () => {};
@@ -71,7 +70,6 @@ export default function AudioEngine() {
       onEnd = onBBlockEnd;
     }
 
-    // GUIDE_ENDED / B_ENDED / IDLE → no audio
     if (!src) {
       setIsPlaying(false);
       setProgress(0);
@@ -82,17 +80,16 @@ export default function AudioEngine() {
     const howl = new Howl({
       src: [src],
       html5: true,
-      onend: (id) => {
-        if (id === soundIdRef.current) onEnd();
-      },
-      onplay: (id) => {
-        soundIdRef.current = id;
+      onend: onEnd,
+      onplay: () => {
         setIsPlaying(true);
-        setDuration(howl.duration(id));
+        setDuration(howl.duration());
 
         const tick = () => {
-          const seek = howl.seek(id);
-          const dur = howl.duration(id);
+          const h = howlRef.current;
+          if (!h) return;
+          const seek = h.seek();
+          const dur = h.duration();
           if (typeof seek === 'number' && dur > 0) {
             setProgress(seek / dur);
           }
@@ -112,26 +109,27 @@ export default function AudioEngine() {
       onloaderror: (_, err) => console.warn('Audio load error:', src, err),
     });
 
-    // Register controls — use soundIdRef so pause targets the right instance
+    howlRef.current = howl;
+
+    // Register controls via howlRef — always up-to-date regardless of closure
     setPlayerControls(
       (ratio) => {
-        const id = soundIdRef.current;
-        if (id !== null) howl.seek(howl.duration(id) * ratio, id);
+        const h = howlRef.current;
+        if (!h) return;
+        h.seek(h.duration() * ratio);
       },
       () => {
-        const id = soundIdRef.current;
-        if (id === null) return;
-        if (howl.playing(id)) {
-          howl.pause(id);
+        const h = howlRef.current;
+        if (!h) return;
+        if (h.playing()) {
+          h.pause();
         } else {
-          howl.play(id);
+          h.play();
         }
       },
     );
 
-    const id = howl.play();
-    soundIdRef.current = id;
-    howlRef.current = howl;
+    howl.play();
 
     return () => {
       cancelAnimationFrame(rafRef.current);
