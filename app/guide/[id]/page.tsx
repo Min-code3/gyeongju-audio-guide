@@ -23,13 +23,12 @@ export default function GuidePage() {
   }, [attraction, setAttraction]);
 
   const handleStart = () => {
-    // Unlock the SAME <audio> element that AudioEngine will reuse.
-    // iOS only needs one play() call per element — subsequent src changes work freely.
-    if (attraction) {
-      const audio = getAudio();
-      audio.src = attraction.aBlocks[0]?.src ?? '';
-      audio.play().then(() => { audio.pause(); audio.currentTime = 0; }).catch(() => {});
-    }
+    // iOS unlock: play a silent 1-sample WAV on the SAME audio element.
+    // Once this element is played from a user gesture, iOS allows all future
+    // play() calls on it (even async) — including src changes by AudioEngine.
+    const audio = getAudio();
+    audio.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA';
+    audio.play().catch(() => {});
     startGuide();
   };
 
