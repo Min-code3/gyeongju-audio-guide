@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { GoogleMap, useJsApiLoader, Marker, Circle } from '@react-google-maps/api';
-import { Attraction, UserPosition } from '@/lib/types';
+import { Attraction, Pin, UserPosition } from '@/lib/types';
 import { useGuideStore } from '@/lib/store';
 
 interface MapProps {
@@ -18,6 +18,20 @@ const MAP_STYLES = [
 ];
 
 const CIRCLE_PATH = 0 as unknown as google.maps.SymbolPath;
+
+function emojiIcon(pin: Pin, isActive: boolean, isVisited: boolean): google.maps.Icon {
+  const emoji = pin.pinType === 'photo' ? '📷' : '🏛️';
+  const size = isActive ? 44 : 36;
+  const opacity = isVisited ? '0.4' : '1';
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <text x="50%" y="80%" font-size="${size * 0.75}" text-anchor="middle" dominant-baseline="auto" opacity="${opacity}">${emoji}</text>
+  </svg>`;
+  return {
+    url: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`,
+    scaledSize: new google.maps.Size(size, size),
+    anchor: new google.maps.Point(size / 2, size),
+  };
+}
 
 export default function Map({ attraction, userPosition }: MapProps) {
   const { status, triggeredPinId, visitedPinIds, triggerPinManual } = useGuideStore();
@@ -64,28 +78,13 @@ export default function Map({ attraction, userPosition }: MapProps) {
           <Marker
             key={pin.id}
             position={{ lat: pin.lat, lng: pin.lng }}
-            label={{
-              text: pin.name,
-              fontSize: '11px',
-              fontWeight: isActive_ ? 'bold' : 'normal',
-              color: '#1c1917',
-            }}
-            icon={{
-              path: CIRCLE_PATH,
-              scale: isActive_ ? 11 : 8,
-              fillColor: isVisited ? '#9ca3af' : isActive_ ? '#d97706' : '#1d4ed8',
-              fillOpacity: 1,
-              strokeColor: '#ffffff',
-              strokeWeight: 2,
-            }}
-            onClick={() => {
-              if (isActive) triggerPinManual(pin.id);
-            }}
+            icon={emojiIcon(pin, isActive_, isVisited)}
+            onClick={() => { if (isActive) triggerPinManual(pin.id); }}
           />
         );
       })}
 
-      {/* Radius circle for pins not yet visited */}
+      {/* Radius circle for unvisited pins */}
       {isActive && attraction.pins.map((pin) => {
         if (visitedPinIds.includes(pin.id)) return null;
         return (

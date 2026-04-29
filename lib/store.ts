@@ -81,13 +81,24 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
   },
 
   resumeGuide: () => {
-    const { attraction, aBlockIndex } = get();
+    const { attraction, aBlockIndex, visitedPinIds } = get();
     if (!attraction) return;
     const nextIndex = aBlockIndex + 1;
     if (nextIndex < attraction.aBlocks.length) {
       set({ status: 'A_PLAYING', aBlockIndex: nextIndex, triggeredPinId: null });
     } else {
-      set({ status: 'GUIDE_ENDED', triggeredPinId: null });
+      // A guide done — play any unvisited B guides automatically
+      const unvisited = attraction.pins.find((p) => !visitedPinIds.includes(p.id));
+      if (unvisited) {
+        set({
+          status: 'B_PLAYING',
+          triggeredPinId: unvisited.id,
+          pendingPinId: null,
+          visitedPinIds: [...visitedPinIds, unvisited.id],
+        });
+      } else {
+        set({ status: 'GUIDE_ENDED', triggeredPinId: null });
+      }
     }
   },
 
@@ -158,7 +169,18 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
     if (nextIndex < attraction.aBlocks.length) {
       set({ status: 'A_PLAYING', aBlockIndex: nextIndex });
     } else {
-      set({ status: 'GUIDE_ENDED' });
+      // A guide done — play any unvisited B guides automatically
+      const unvisited = attraction.pins.find((p) => !visitedPinIds.includes(p.id));
+      if (unvisited) {
+        set({
+          status: 'B_PLAYING',
+          triggeredPinId: unvisited.id,
+          pendingPinId: null,
+          visitedPinIds: [...visitedPinIds, unvisited.id],
+        });
+      } else {
+        set({ status: 'GUIDE_ENDED' });
+      }
     }
   },
 

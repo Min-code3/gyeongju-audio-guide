@@ -1,7 +1,6 @@
 export interface AudioBlock {
   id: string;
   src: string;
-  transcript?: string;
 }
 
 export interface Pin {
@@ -10,6 +9,7 @@ export interface Pin {
   lat: number;
   lng: number;
   radius: number;
+  pinType?: 'photo' | 'spot'; // 📷 or 🏛️
   bBlock: AudioBlock;
 }
 

@@ -78,12 +78,6 @@ export default function PlayerBar({ attraction, onStart }: PlayerBarProps) {
   const triggeredPin = attraction.pins.find((p) => p.id === triggeredPinId);
   const elapsed = duration * progress;
 
-  const currentTranscript = (() => {
-    if (status === 'A_PLAYING') return attraction.aBlocks[aBlockIndex]?.transcript ?? null;
-    if (status === 'B_PLAYING') return triggeredPin?.bBlock.transcript ?? null;
-    return null;
-  })();
-
   // ── IDLE ───────────────────────────────────────────────────────────────────
   if (status === 'IDLE') {
     return (
@@ -150,11 +144,6 @@ export default function PlayerBar({ attraction, onStart }: PlayerBarProps) {
         {status === 'A_PLAYING' ? <PrevNextButtons /> : <PlayPauseButton />}
       </div>
 
-      {currentTranscript && (
-        <div className="bg-stone-50 rounded-2xl px-4 py-3 max-h-28 overflow-y-auto">
-          <p className="text-xs text-stone-500 leading-relaxed">{currentTranscript}</p>
-        </div>
-      )}
     </div>
   );
 }
