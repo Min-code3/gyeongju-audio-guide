@@ -33,7 +33,6 @@ export default function TourMap({ attractions, center, defaultZoom, selectedId }
     const attraction = attractions.find((a) => a.id === selectedId);
     if (attraction) {
       mapRef.current.panTo(attraction.center);
-      mapRef.current.setZoom(attraction.defaultZoom);
     }
   }, [selectedId, attractions]);
 
