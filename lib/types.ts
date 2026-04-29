@@ -23,6 +23,15 @@ export interface Attraction {
   pins: Pin[];
 }
 
+export interface Tour {
+  id: string;
+  name: string;
+  description?: string;
+  center: { lat: number; lng: number };
+  defaultZoom: number;
+  attractions: Attraction[];
+}
+
 export type GuideStatus =
   | 'IDLE'
   | 'A_PLAYING'
