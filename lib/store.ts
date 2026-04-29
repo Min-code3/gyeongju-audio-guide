@@ -118,7 +118,9 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
   },
 
   triggerPin: (pinId: string) => {
-    const { status, visitedPinIds } = get();
+    const { attraction, status, visitedPinIds } = get();
+    const pin = attraction?.pins.find((p) => p.id === pinId);
+    if (!pin?.bBlock) return; // marker-only pin, no audio
     if (visitedPinIds.includes(pinId)) return;
 
     if (status === 'A_PLAYING') {
@@ -134,7 +136,9 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
   },
 
   triggerPinManual: (pinId: string) => {
-    const { status, visitedPinIds } = get();
+    const { attraction, status, visitedPinIds } = get();
+    const pin = attraction?.pins.find((p) => p.id === pinId);
+    if (!pin?.bBlock) return; // marker-only pin, no audio
     if (status === 'B_PLAYING') return;
 
     if (status === 'A_PLAYING') {

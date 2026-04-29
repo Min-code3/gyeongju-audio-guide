@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { GoogleMap, useJsApiLoader, Marker, Circle } from '@react-google-maps/api';
 import { Attraction, Pin, UserPosition } from '@/lib/types';
 import { useGuideStore } from '@/lib/store';
@@ -20,7 +20,7 @@ const MAP_STYLES = [
 const CIRCLE_PATH = 0 as unknown as google.maps.SymbolPath;
 
 function emojiIcon(pin: Pin, isActive: boolean, isVisited: boolean): google.maps.Icon {
-  const emoji = pin.pinType === 'photo' ? '📷' : '🏛️';
+  const emoji = pin.pinType === 'photo' ? '❇️' : '✴️';
   const size = isActive ? 44 : 36;
   const opacity = isVisited ? '0.4' : '1';
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
@@ -41,11 +41,11 @@ export default function Map({ attraction, userPosition }: MapProps) {
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? '',
   });
 
-  useEffect(() => {
+  const handleLocateMe = () => {
     if (mapRef.current && userPosition) {
       mapRef.current.panTo({ lat: userPosition.lat, lng: userPosition.lng });
     }
-  }, [userPosition]);
+  };
 
   if (!isLoaded) {
     return (
@@ -58,65 +58,82 @@ export default function Map({ attraction, userPosition }: MapProps) {
   const isActive = status !== 'IDLE';
 
   return (
-    <GoogleMap
-      mapContainerStyle={{ width: '100%', height: '100%' }}
-      center={attraction.center}
-      zoom={attraction.defaultZoom}
-      options={{
-        styles: MAP_STYLES,
-        disableDefaultUI: true,
-        zoomControl: true,
-        gestureHandling: 'greedy',
-      }}
-      onLoad={(map) => { mapRef.current = map; }}
-    >
-      {attraction.pins.map((pin) => {
-        const isVisited = visitedPinIds.includes(pin.id);
-        const isActive_ = pin.id === triggeredPinId;
+    <div className="relative w-full h-full">
+      <GoogleMap
+        mapContainerStyle={{ width: '100%', height: '100%' }}
+        center={attraction.center}
+        zoom={attraction.defaultZoom}
+        options={{
+          styles: MAP_STYLES,
+          disableDefaultUI: true,
+          zoomControl: true,
+          gestureHandling: 'greedy',
+        }}
+        onLoad={(map) => { mapRef.current = map; }}
+      >
+        {attraction.pins.map((pin) => {
+          const isVisited = visitedPinIds.includes(pin.id);
+          const isActive_ = pin.id === triggeredPinId;
 
-        return (
+          return (
+            <Marker
+              key={pin.id}
+              position={{ lat: pin.lat, lng: pin.lng }}
+              icon={emojiIcon(pin, isActive_, isVisited)}
+              onClick={() => { if (isActive && pin.bBlock) triggerPinManual(pin.id); }}
+            />
+          );
+        })}
+
+        {/* Radius circle for unvisited pins with audio */}
+        {isActive && attraction.pins.map((pin) => {
+          if (!pin.bBlock || pin.radius === 0) return null;
+          if (visitedPinIds.includes(pin.id)) return null;
+          return (
+            <Circle
+              key={`circle-${pin.id}`}
+              center={{ lat: pin.lat, lng: pin.lng }}
+              radius={pin.radius}
+              options={{
+                fillColor: '#d97706',
+                fillOpacity: 0.08,
+                strokeColor: '#d97706',
+                strokeOpacity: 0.3,
+                strokeWeight: 1,
+              }}
+            />
+          );
+        })}
+
+        {/* User position dot */}
+        {userPosition && (
           <Marker
-            key={pin.id}
-            position={{ lat: pin.lat, lng: pin.lng }}
-            icon={emojiIcon(pin, isActive_, isVisited)}
-            onClick={() => { if (isActive) triggerPinManual(pin.id); }}
-          />
-        );
-      })}
-
-      {/* Radius circle for unvisited pins */}
-      {isActive && attraction.pins.map((pin) => {
-        if (visitedPinIds.includes(pin.id)) return null;
-        return (
-          <Circle
-            key={`circle-${pin.id}`}
-            center={{ lat: pin.lat, lng: pin.lng }}
-            radius={pin.radius}
-            options={{
-              fillColor: '#d97706',
-              fillOpacity: 0.08,
-              strokeColor: '#d97706',
-              strokeOpacity: 0.3,
-              strokeWeight: 1,
+            position={{ lat: userPosition.lat, lng: userPosition.lng }}
+            icon={{
+              path: CIRCLE_PATH,
+              scale: 8,
+              fillColor: '#3b82f6',
+              fillOpacity: 1,
+              strokeColor: '#ffffff',
+              strokeWeight: 2,
             }}
           />
-        );
-      })}
+        )}
+      </GoogleMap>
 
-      {/* User position */}
+      {/* Current location button */}
       {userPosition && (
-        <Marker
-          position={{ lat: userPosition.lat, lng: userPosition.lng }}
-          icon={{
-            path: CIRCLE_PATH,
-            scale: 8,
-            fillColor: '#3b82f6',
-            fillOpacity: 1,
-            strokeColor: '#ffffff',
-            strokeWeight: 2,
-          }}
-        />
+        <button
+          onClick={handleLocateMe}
+          className="absolute bottom-4 right-4 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center active:bg-stone-100 transition-colors"
+          aria-label="현재 위치로 이동"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+          </svg>
+        </button>
       )}
-    </GoogleMap>
+    </div>
   );
 }

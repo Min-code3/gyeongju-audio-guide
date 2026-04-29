@@ -9,8 +9,8 @@ export interface Pin {
   lat: number;
   lng: number;
   radius: number;
-  pinType?: 'photo' | 'spot'; // 📷 or 🏛️
-  bBlock: AudioBlock;
+  pinType?: 'photo' | 'spot';
+  bBlock?: AudioBlock; // optional — if absent, pin is a map marker only
 }
 
 export interface Attraction {

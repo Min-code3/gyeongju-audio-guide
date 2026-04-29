@@ -54,4 +54,62 @@ export const cheomseongdae: Attraction = {
   ],
 };
 
-export const ALL_ATTRACTIONS: Attraction[] = [daereungwon, cheomseongdae];
+export const woljeongyo: Attraction = {
+  id: 'woljeongyo',
+  name: '월정교',
+  description: '신라 시대 복원된 아름다운 목조 교량.',
+  center: { lat: 35.82909, lng: 129.21707 },
+  defaultZoom: 17,
+  aBlocks: [],
+  pins: [
+    {
+      id: 'wj-photo1',
+      name: '포토스팟 1',
+      lat: 35.82891,
+      lng: 129.21774,
+      radius: 0,
+      pinType: 'photo',
+      // 오디오 없음 — 지도 마커 전용
+    },
+    {
+      id: 'wj-photo2',
+      name: '포토스팟 2',
+      lat: 35.82927,
+      lng: 129.21640,
+      radius: 0,
+      pinType: 'photo',
+      // 오디오 없음 — 지도 마커 전용
+    },
+  ],
+};
+
+export const gyochonMaeul: Attraction = {
+  id: 'gyochon-maeul',
+  name: '교촌마을',
+  description: '경주 최씨 고택이 있는 전통 한옥 마을.',
+  center: { lat: 35.83064, lng: 129.21623 },
+  defaultZoom: 17,
+  aBlocks: [],
+  pins: [
+    {
+      id: 'gc-choebuza',
+      name: '최부자댁',
+      lat: 35.83064,
+      lng: 129.21623,
+      radius: 100,
+      pinType: 'spot',
+      bBlock: { id: 'gc-choebuza-b', src: '/audio/gc-choebuza-b.mp3' },
+    },
+    {
+      id: 'gc-tteok',
+      name: '떡 체험',
+      lat: 35.83013,
+      lng: 129.21564,
+      radius: 50,
+      pinType: 'spot',
+      bBlock: { id: 'gc-tteok-b', src: '/audio/gc-tteok-b.mp3' },
+    },
+  ],
+};
+
+export const ALL_ATTRACTIONS: Attraction[] = [daereungwon, cheomseongdae, woljeongyo, gyochonMaeul];

@@ -32,6 +32,7 @@ export default function AudioEngine() {
         if (s === 'GUIDE_ENDED' && !noAGuide) return;
 
         for (const pin of a.pins) {
+          if (!pin.bBlock || pin.radius === 0) continue;
           if (isWithinRadius(lat, lng, pin.lat, pin.lng, pin.radius)) {
             triggerPin(pin.id);
             break;
@@ -51,7 +52,8 @@ export default function AudioEngine() {
 
     cancelAnimationFrame(rafRef.current);
     const audio = getAudio();
-    audio.pause();
+    // Do NOT call audio.pause() here — it cancels the iOS unlock initiated in handleStart.
+    // Setting audio.src below automatically resets playback without revoking the unlock.
 
     let src: string | null = null;
     let onEnd: () => void = () => {};
@@ -61,7 +63,7 @@ export default function AudioEngine() {
       onEnd = onABlockEnd;
     } else if (status === 'B_PLAYING') {
       const pin = attraction.pins.find((p) => p.id === triggeredPinId);
-      src = pin?.bBlock.src ?? null;
+      src = pin?.bBlock?.src ?? null;
       onEnd = onBBlockEnd;
     }
 
