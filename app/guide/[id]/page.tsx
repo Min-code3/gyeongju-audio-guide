@@ -6,6 +6,7 @@ import { useParams, notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ALL_ATTRACTIONS } from '@/data/attractions';
 import { useGuideStore } from '@/lib/store';
+import { getAudio } from '@/lib/audioElement';
 
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 const AudioEngine = dynamic(() => import('@/components/AudioEngine'), { ssr: false });
@@ -22,12 +23,12 @@ export default function GuidePage() {
   }, [attraction, setAttraction]);
 
   const handleStart = () => {
-    // iOS audio unlock: play first audio file silently to register user gesture
-    // html5 audio requires this so subsequent async plays are allowed
-    if (attraction && typeof window !== 'undefined') {
-      const unlock = new Audio(attraction.aBlocks[0]?.src ?? '');
-      unlock.volume = 0;
-      unlock.play().then(() => { unlock.pause(); }).catch(() => {});
+    // Unlock the SAME <audio> element that AudioEngine will reuse.
+    // iOS only needs one play() call per element — subsequent src changes work freely.
+    if (attraction) {
+      const audio = getAudio();
+      audio.src = attraction.aBlocks[0]?.src ?? '';
+      audio.play().then(() => { audio.pause(); audio.currentTime = 0; }).catch(() => {});
     }
     startGuide();
   };

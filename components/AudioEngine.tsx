@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Howl } from 'howler';
 import { useGuideStore } from '@/lib/store';
 import { isWithinRadius } from '@/lib/geofence';
+import { getAudio } from '@/lib/audioElement';
 
 export default function AudioEngine() {
   const {
@@ -13,7 +13,6 @@ export default function AudioEngine() {
     onABlockEnd, onBBlockEnd, triggerPin,
   } = useGuideStore();
 
-  const howlRef = useRef<Howl | null>(null);
   const rafRef = useRef<number>(0);
 
   // ─── GPS watch ────────────────────────────────────────────────────────────
@@ -47,11 +46,8 @@ export default function AudioEngine() {
     if (!attraction) return;
 
     cancelAnimationFrame(rafRef.current);
-    if (howlRef.current) {
-      howlRef.current.stop();
-      howlRef.current.unload();
-      howlRef.current = null;
-    }
+    const audio = getAudio();
+    audio.pause();
 
     let src: string | null = null;
     let onEnd: () => void = () => {};
@@ -72,50 +68,43 @@ export default function AudioEngine() {
       return;
     }
 
-    const howl = new Howl({
-      src: [src],
-      html5: true,
-      onend: onEnd,
-      onplay: () => {
-        setIsPlaying(true);
-        setDuration(howl.duration());
+    audio.src = src;
+    audio.currentTime = 0;
 
-        const tick = () => {
-          const h = howlRef.current;
-          if (!h) return;
-          const seek = h.seek();
-          const dur = h.duration();
-          if (typeof seek === 'number' && dur > 0) setProgress(seek / dur);
-          rafRef.current = requestAnimationFrame(tick);
-        };
+    audio.onplay = () => {
+      setIsPlaying(true);
+      const tick = () => {
+        if (audio.duration > 0) setProgress(audio.currentTime / audio.duration);
         rafRef.current = requestAnimationFrame(tick);
-      },
-      onpause: () => { setIsPlaying(false); cancelAnimationFrame(rafRef.current); },
-      onstop: () => { setIsPlaying(false); setProgress(0); cancelAnimationFrame(rafRef.current); },
-      onloaderror: (_, err) => console.warn('Audio load error:', src, err),
-    });
+      };
+      rafRef.current = requestAnimationFrame(tick);
+    };
 
-    howlRef.current = howl;
+    audio.onloadedmetadata = () => setDuration(audio.duration);
 
+    audio.onpause = () => {
+      setIsPlaying(false);
+      cancelAnimationFrame(rafRef.current);
+    };
+
+    audio.onended = () => {
+      setIsPlaying(false);
+      setProgress(0);
+      cancelAnimationFrame(rafRef.current);
+      onEnd();
+    };
+
+    // Register player controls
     setPlayerControls(
-      (ratio) => {
-        const h = howlRef.current;
-        if (h) h.seek(h.duration() * ratio);
-      },
-      () => {
-        const h = howlRef.current;
-        if (!h) return;
-        const playing = useGuideStore.getState().isPlaying;
-        if (playing) { h.pause(); } else { h.play(); }
-      },
+      (ratio) => { audio.currentTime = audio.duration * ratio; },
+      () => { audio.paused ? audio.play().catch(console.warn) : audio.pause(); },
     );
 
-    howl.play();
+    audio.play().catch(console.warn);
 
     return () => {
       cancelAnimationFrame(rafRef.current);
-      howl.stop();
-      howl.unload();
+      audio.pause();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, aBlockIndex, triggeredPinId, attraction]);
