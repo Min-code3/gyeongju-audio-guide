@@ -79,18 +79,17 @@ export default function AudioEngine() {
 
     audio.onplay = () => {
       setIsPlaying(true);
-      const tick = () => {
+      // 500ms interval instead of RAF — prevents 60fps re-renders that block iOS taps
+      rafRef.current = window.setInterval(() => {
         if (audio.duration > 0) setProgress(audio.currentTime / audio.duration);
-        rafRef.current = requestAnimationFrame(tick);
-      };
-      rafRef.current = requestAnimationFrame(tick);
+      }, 500) as unknown as number;
     };
 
     audio.onloadedmetadata = () => setDuration(audio.duration);
 
     audio.onpause = () => {
       setIsPlaying(false);
-      cancelAnimationFrame(rafRef.current);
+      clearInterval(rafRef.current);
     };
 
     audio.onended = () => {
@@ -109,7 +108,7 @@ export default function AudioEngine() {
     audio.play().catch(console.warn);
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
+      clearInterval(rafRef.current);
       audio.pause();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -39,7 +39,7 @@ export default function GuidePage() {
       {/* Back button */}
       <Link
         href="/"
-        className="absolute top-4 left-4 z-10 bg-white rounded-full px-3 py-1.5 text-xs text-stone-600 shadow-md"
+        className="absolute top-4 left-4 z-50 bg-white rounded-full px-3 py-1.5 text-xs text-stone-600 shadow-md"
       >
         ← Back
       </Link>

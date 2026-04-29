@@ -59,6 +59,7 @@ export default function Map({ attraction, userPosition }: MapProps) {
           styles: MAP_STYLES,
           disableDefaultUI: true,
           zoomControl: true,
+          zoomControlOptions: { position: 7 }, // RIGHT_TOP — above PlayerBar
           gestureHandling: 'greedy',
         }}
         onLoad={(map) => { mapRef.current = map; }}
