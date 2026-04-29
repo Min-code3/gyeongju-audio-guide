@@ -65,8 +65,16 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
     const { attraction } = get();
     if (!attraction) return;
     if (attraction.aBlocks.length === 0) {
-      // No A-guide — go straight to explore mode (pins only)
-      set({ status: 'GUIDE_ENDED', aBlockIndex: 0, visitedPinIds: [], pendingPinId: null });
+      // No A-guide — play first pin's B guide immediately
+      const firstPin = attraction.pins[0];
+      if (!firstPin) return;
+      set({
+        status: 'B_PLAYING',
+        triggeredPinId: firstPin.id,
+        visitedPinIds: [firstPin.id],
+        aBlockIndex: 0,
+        pendingPinId: null,
+      });
     } else {
       set({ status: 'A_PLAYING', aBlockIndex: 0, visitedPinIds: [], pendingPinId: null });
     }
@@ -104,7 +112,7 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
 
     if (status === 'A_PLAYING') {
       set({ pendingPinId: pinId });
-    } else if (status === 'GUIDE_ENDED') {
+    } else if (status === 'GUIDE_ENDED' || status === 'IDLE') {
       set({
         status: 'B_PLAYING',
         triggeredPinId: pinId,

@@ -25,7 +25,11 @@ export default function AudioEngine() {
         setUserPosition({ lat, lng, accuracy });
 
         const { status: s, attraction: a } = useGuideStore.getState();
-        if (!a || s === 'IDLE' || s === 'GUIDE_ENDED') return;
+        if (!a) return;
+        // For attractions with no A-guide, GPS works even in IDLE
+        const noAGuide = a.aBlocks.length === 0;
+        if (!noAGuide && (s === 'IDLE' || s === 'GUIDE_ENDED')) return;
+        if (s === 'GUIDE_ENDED' && !noAGuide) return;
 
         for (const pin of a.pins) {
           if (isWithinRadius(lat, lng, pin.lat, pin.lng, pin.radius)) {
