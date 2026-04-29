@@ -71,13 +71,7 @@ export default function Map({ attraction, userPosition }: MapProps) {
             <Marker
               key={pin.id}
               position={{ lat: pin.lat, lng: pin.lng }}
-              label={{
-              text: pin.name,
-              fontSize: '11px',
-              fontWeight: isActive_ ? 'bold' : 'normal',
-              color: '#1c1917',
-            }}
-            icon={{
+              icon={{
               path: CIRCLE_PATH,
               scale: isActive_ ? 11 : 8,
               fillColor: pinColor(pin, isActive_, isVisited),
