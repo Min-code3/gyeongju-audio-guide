@@ -19,18 +19,10 @@ const MAP_STYLES = [
 
 const CIRCLE_PATH = 0 as unknown as google.maps.SymbolPath;
 
-function emojiIcon(pin: Pin, isActive: boolean, isVisited: boolean): google.maps.Icon {
-  const emoji = pin.pinType === 'photo' ? '❇️' : '✴️';
-  const size = isActive ? 44 : 36;
-  const opacity = isVisited ? '0.4' : '1';
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-    <text x="50%" y="80%" font-size="${size * 0.75}" text-anchor="middle" dominant-baseline="auto" opacity="${opacity}">${emoji}</text>
-  </svg>`;
-  return {
-    url: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`,
-    scaledSize: new google.maps.Size(size, size),
-    anchor: new google.maps.Point(size / 2, size),
-  };
+function pinColor(pin: Pin, isActive: boolean, isVisited: boolean): string {
+  if (isVisited) return '#9ca3af';
+  if (isActive) return '#d97706';
+  return pin.pinType === 'photo' ? '#10b981' : '#1d4ed8';
 }
 
 export default function Map({ attraction, userPosition }: MapProps) {
@@ -79,7 +71,20 @@ export default function Map({ attraction, userPosition }: MapProps) {
             <Marker
               key={pin.id}
               position={{ lat: pin.lat, lng: pin.lng }}
-              icon={emojiIcon(pin, isActive_, isVisited)}
+              label={{
+              text: pin.name,
+              fontSize: '11px',
+              fontWeight: isActive_ ? 'bold' : 'normal',
+              color: '#1c1917',
+            }}
+            icon={{
+              path: CIRCLE_PATH,
+              scale: isActive_ ? 11 : 8,
+              fillColor: pinColor(pin, isActive_, isVisited),
+              fillOpacity: 1,
+              strokeColor: '#ffffff',
+              strokeWeight: 2,
+            }}
               onClick={() => { if (isActive && pin.bBlock) triggerPinManual(pin.id); }}
             />
           );
