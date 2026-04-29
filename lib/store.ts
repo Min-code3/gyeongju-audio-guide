@@ -12,7 +12,7 @@ interface GuideStore {
   aBlockIndex: number;
   triggeredPinId: string | null;
   pendingPinId: string | null;
-  visitedPinIds: string[]; // GPS-auto visited — won't re-trigger automatically
+  visitedPinIds: string[];
 
   isPlaying: boolean;
   progress: number;
@@ -30,13 +30,10 @@ interface GuideStore {
   prevBlock: () => void;
   nextBlock: () => void;
 
-  // GPS arrival → only triggers if pin not in visitedPinIds
   triggerPin: (pinId: string) => void;
-  // Manual pin click → always triggers regardless of visitedPinIds
   triggerPinManual: (pinId: string) => void;
 
   onABlockEnd: () => void;
-  onArrivalEnd: () => void;
   onBBlockEnd: () => void;
 }
 
@@ -98,14 +95,13 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
 
   triggerPin: (pinId: string) => {
     const { status, visitedPinIds } = get();
-    // GPS: skip if already auto-visited
     if (visitedPinIds.includes(pinId)) return;
 
     if (status === 'A_PLAYING') {
       set({ pendingPinId: pinId });
-    } else if (status === 'B_ENDED' || status === 'GUIDE_ENDED') {
+    } else if (status === 'GUIDE_ENDED') {
       set({
-        status: 'ARRIVAL',
+        status: 'B_PLAYING',
         triggeredPinId: pinId,
         pendingPinId: null,
         visitedPinIds: [...visitedPinIds, pinId],
@@ -115,14 +111,13 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
 
   triggerPinManual: (pinId: string) => {
     const { status, visitedPinIds } = get();
-    if (status === 'ARRIVAL' || status === 'B_PLAYING') return;
+    if (status === 'B_PLAYING') return;
 
     if (status === 'A_PLAYING') {
       set({ pendingPinId: pinId });
     } else {
-      // B_ENDED, GUIDE_ENDED, IDLE — go directly to arrival
       set({
-        status: 'ARRIVAL',
+        status: 'B_PLAYING',
         triggeredPinId: pinId,
         pendingPinId: null,
         visitedPinIds: visitedPinIds.includes(pinId)
@@ -138,7 +133,7 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
 
     if (pendingPinId) {
       set({
-        status: 'ARRIVAL',
+        status: 'B_PLAYING',
         triggeredPinId: pendingPinId,
         pendingPinId: null,
         visitedPinIds: [...visitedPinIds, pendingPinId],
@@ -150,12 +145,12 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
     if (nextIndex < attraction.aBlocks.length) {
       set({ status: 'A_PLAYING', aBlockIndex: nextIndex });
     } else {
-      // All A blocks played once — stop auto-play
       set({ status: 'GUIDE_ENDED' });
     }
   },
 
-  onArrivalEnd: () => set({ status: 'B_PLAYING' }),
-
-  onBBlockEnd: () => set({ status: 'B_ENDED' }),
+  // B ends → auto-resume A guide
+  onBBlockEnd: () => {
+    get().resumeGuide();
+  },
 }));

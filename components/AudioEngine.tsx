@@ -10,28 +10,11 @@ export default function AudioEngine() {
     attraction, status, aBlockIndex, triggeredPinId,
     setUserPosition, setPlayerControls,
     setIsPlaying, setProgress, setDuration,
-    onABlockEnd, onArrivalEnd, onBBlockEnd, triggerPin,
+    onABlockEnd, onBBlockEnd, triggerPin,
   } = useGuideStore();
 
   const howlRef = useRef<Howl | null>(null);
   const rafRef = useRef<number>(0);
-
-  // ─── iOS AudioContext unlock ───────────────────────────────────────────────
-  // iOS suspends AudioContext on every non-gesture event. Keep it running
-  // by resuming on every user touch.
-  useEffect(() => {
-    const resume = () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const ctx = (window as any).Howler?.ctx as AudioContext | undefined;
-      if (ctx && ctx.state === 'suspended') ctx.resume();
-    };
-    document.addEventListener('touchstart', resume, { passive: true });
-    document.addEventListener('click', resume);
-    return () => {
-      document.removeEventListener('touchstart', resume);
-      document.removeEventListener('click', resume);
-    };
-  }, []);
 
   // ─── GPS watch ────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -43,7 +26,7 @@ export default function AudioEngine() {
         setUserPosition({ lat, lng, accuracy });
 
         const { status: s, attraction: a } = useGuideStore.getState();
-        if (!a || s === 'IDLE' || s === 'B_ENDED' || s === 'GUIDE_ENDED') return;
+        if (!a || s === 'IDLE' || s === 'GUIDE_ENDED') return;
 
         for (const pin of a.pins) {
           if (isWithinRadius(lat, lng, pin.lat, pin.lng, pin.radius)) {
@@ -63,7 +46,6 @@ export default function AudioEngine() {
   useEffect(() => {
     if (!attraction) return;
 
-    // Cleanup previous
     cancelAnimationFrame(rafRef.current);
     if (howlRef.current) {
       howlRef.current.stop();
@@ -77,10 +59,6 @@ export default function AudioEngine() {
     if (status === 'A_PLAYING') {
       src = attraction.aBlocks[aBlockIndex]?.src ?? null;
       onEnd = onABlockEnd;
-    } else if (status === 'ARRIVAL') {
-      const pin = attraction.pins.find((p) => p.id === triggeredPinId);
-      src = pin?.arrivalSrc ?? null;
-      onEnd = onArrivalEnd;
     } else if (status === 'B_PLAYING') {
       const pin = attraction.pins.find((p) => p.id === triggeredPinId);
       src = pin?.bBlock.src ?? null;
@@ -96,6 +74,7 @@ export default function AudioEngine() {
 
     const howl = new Howl({
       src: [src],
+      html5: true,
       onend: onEnd,
       onplay: () => {
         setIsPlaying(true);
@@ -106,53 +85,32 @@ export default function AudioEngine() {
           if (!h) return;
           const seek = h.seek();
           const dur = h.duration();
-          if (typeof seek === 'number' && dur > 0) {
-            setProgress(seek / dur);
-          }
+          if (typeof seek === 'number' && dur > 0) setProgress(seek / dur);
           rafRef.current = requestAnimationFrame(tick);
         };
         rafRef.current = requestAnimationFrame(tick);
       },
-      onpause: () => {
-        setIsPlaying(false);
-        cancelAnimationFrame(rafRef.current);
-      },
-      onstop: () => {
-        setIsPlaying(false);
-        setProgress(0);
-        cancelAnimationFrame(rafRef.current);
-      },
+      onpause: () => { setIsPlaying(false); cancelAnimationFrame(rafRef.current); },
+      onstop: () => { setIsPlaying(false); setProgress(0); cancelAnimationFrame(rafRef.current); },
       onloaderror: (_, err) => console.warn('Audio load error:', src, err),
     });
 
     howlRef.current = howl;
 
-    // Register controls via howlRef — always up-to-date regardless of closure
     setPlayerControls(
       (ratio) => {
         const h = howlRef.current;
-        if (!h) return;
-        h.seek(h.duration() * ratio);
+        if (h) h.seek(h.duration() * ratio);
       },
       () => {
         const h = howlRef.current;
         if (!h) return;
-        // Use store's isPlaying — more reliable than h.playing() on iOS
         const playing = useGuideStore.getState().isPlaying;
-        if (playing) {
-          h.pause();
-        } else {
-          h.play();
-        }
+        if (playing) { h.pause(); } else { h.play(); }
       },
     );
 
-    (async () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const ctx = (window as any).Howler?.ctx as AudioContext | undefined;
-      if (ctx?.state === 'suspended') await ctx.resume();
-      if (howlRef.current === howl) howl.play();
-    })();
+    howl.play();
 
     return () => {
       cancelAnimationFrame(rafRef.current);

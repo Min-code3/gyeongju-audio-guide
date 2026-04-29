@@ -10,7 +10,6 @@ export interface Pin {
   lat: number;
   lng: number;
   radius: number;
-  arrivalSrc: string;
   bBlock: AudioBlock;
 }
 
@@ -18,7 +17,6 @@ export interface Attraction {
   id: string;
   name: string;
   description?: string;
-  thumbnail?: string;
   center: { lat: number; lng: number };
   defaultZoom: number;
   aBlocks: AudioBlock[];
@@ -28,10 +26,8 @@ export interface Attraction {
 export type GuideStatus =
   | 'IDLE'
   | 'A_PLAYING'
-  | 'GUIDE_ENDED' // all A blocks played once — no more auto-play
-  | 'ARRIVAL'
-  | 'B_PLAYING'
-  | 'B_ENDED';
+  | 'GUIDE_ENDED'
+  | 'B_PLAYING';
 
 export interface UserPosition {
   lat: number;

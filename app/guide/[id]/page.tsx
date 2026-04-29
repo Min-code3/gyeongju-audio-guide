@@ -22,10 +22,12 @@ export default function GuidePage() {
   }, [attraction, setAttraction]);
 
   const handleStart = () => {
-    // iOS requires AudioContext resume from a direct user gesture
-    if (typeof window !== 'undefined') {
-      const Howler = (window as unknown as { Howler?: { ctx?: AudioContext } }).Howler;
-      Howler?.ctx?.resume();
+    // iOS audio unlock: play first audio file silently to register user gesture
+    // html5 audio requires this so subsequent async plays are allowed
+    if (attraction && typeof window !== 'undefined') {
+      const unlock = new Audio(attraction.aBlocks[0]?.src ?? '');
+      unlock.volume = 0;
+      unlock.play().then(() => { unlock.pause(); }).catch(() => {});
     }
     startGuide();
   };
