@@ -52,4 +52,27 @@ export const daereungwon: Attraction = {
   ],
 };
 
-export const ALL_ATTRACTIONS: Attraction[] = [daereungwon];
+export const cheomseongdae: Attraction = {
+  id: 'cheomseongdae',
+  name: '첨성대',
+  description: '동양에서 가장 오래된 천문대, 신라 선덕여왕 시대의 유산.',
+  center: { lat: 35.83452, lng: 129.21900 },
+  defaultZoom: 17,
+  aBlocks: [], // 추가 예정
+  pins: [
+    {
+      id: 'cs-cheomseongdae',
+      name: '첨성대',
+      lat: 35.83452,
+      lng: 129.21900,
+      radius: 100,
+      bBlock: {
+        id: 'cs-cheomseongdae-b',
+        src: '/audio/cs-cheomseongdae-b.mp3',
+        transcript: '', // 스크립트 추가 예정
+      },
+    },
+  ],
+};
+
+export const ALL_ATTRACTIONS: Attraction[] = [daereungwon, cheomseongdae];

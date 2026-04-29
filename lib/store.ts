@@ -63,8 +63,13 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
 
   startGuide: () => {
     const { attraction } = get();
-    if (!attraction || attraction.aBlocks.length === 0) return;
-    set({ status: 'A_PLAYING', aBlockIndex: 0, visitedPinIds: [], pendingPinId: null });
+    if (!attraction) return;
+    if (attraction.aBlocks.length === 0) {
+      // No A-guide — go straight to explore mode (pins only)
+      set({ status: 'GUIDE_ENDED', aBlockIndex: 0, visitedPinIds: [], pendingPinId: null });
+    } else {
+      set({ status: 'A_PLAYING', aBlockIndex: 0, visitedPinIds: [], pendingPinId: null });
+    }
   },
 
   resumeGuide: () => {

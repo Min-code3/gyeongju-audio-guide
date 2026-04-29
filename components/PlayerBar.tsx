@@ -103,13 +103,21 @@ export default function PlayerBar({ attraction, onStart }: PlayerBarProps) {
 
   // ── GUIDE_ENDED ────────────────────────────────────────────────────────────
   if (status === 'GUIDE_ENDED') {
+    const hasABlocks = attraction.aBlocks.length > 0;
     return (
       <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-xl px-6 pt-5 pb-10">
-        <p className="text-xs text-stone-400 uppercase tracking-widest mb-1">Guide complete</p>
-        <p className="text-base font-bold text-stone-800 mb-4">{attraction.name}</p>
-        <div className="flex items-center justify-center">
-          <PrevNextButtons />
-        </div>
+        <p className="text-xs text-stone-400 uppercase tracking-widest mb-1">
+          {hasABlocks ? 'Guide complete' : 'Explore'}
+        </p>
+        <p className="text-base font-bold text-stone-800 mb-1">{attraction.name}</p>
+        <p className="text-sm text-stone-400 mb-4">
+          {hasABlocks ? 'Tap a pin on the map to hear its guide.' : 'Tap a pin on the map to hear its guide.'}
+        </p>
+        {hasABlocks && (
+          <div className="flex items-center justify-center">
+            <PrevNextButtons />
+          </div>
+        )}
       </div>
     );
   }
