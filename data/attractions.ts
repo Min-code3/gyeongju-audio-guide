@@ -199,10 +199,65 @@ export const bulguksa: Attraction = {
   id: 'bulguksa',
   name: '불국사',
   description: 'UNESCO 세계문화유산, 신라 불교 건축의 정수.',
-  center: { lat: 35.7896, lng: 129.3314 }, // 답사 후 정확한 좌표로 교체
-  defaultZoom: 16,
-  aBlocks: [], // 답사 후 추가
-  pins: [],    // 답사 후 추가
+  center: { lat: 35.7896, lng: 129.3316 },
+  defaultZoom: 17,
+  aBlocks: [
+    { id: 'bk-a1', src: '/audio/bk-a1.mp3' },
+    { id: 'bk-a2', src: '/audio/bk-a2.mp3' },
+    { id: 'bk-a3', src: '/audio/bk-a3.mp3' },
+  ],
+  pins: [
+    {
+      id: 'bk-cheonwangmun',
+      name: '천왕문',
+      lat: 35.78841,
+      lng: 129.33248,
+      radius: 30,
+      pinType: 'spot',
+      autoPlay: false,
+      bBlock: { id: 'bk-cheonwangmun-b', src: '/audio/bk-cheonwangmun-b.mp3' },
+    },
+    {
+      id: 'bk-baekungyo',
+      name: '백운교',
+      lat: 35.78962,
+      lng: 129.33219,
+      radius: 30,
+      pinType: 'spot',
+      autoPlay: false,
+      bBlock: { id: 'bk-baekungyo-b', src: '/audio/bk-baekungyo-b.mp3' },
+    },
+    {
+      id: 'bk-yaksuтео',
+      name: '약수터',
+      lat: 35.78957,
+      lng: 129.33238,
+      radius: 30,
+      pinType: 'spot',
+      autoPlay: false,
+      bBlock: { id: 'bk-yaksuteo-b', src: '/audio/bk-yaksuteo-b.mp3' },
+    },
+    {
+      id: 'bk-daewoongjeon',
+      name: '대웅전',
+      lat: 35.79009,
+      lng: 129.33207,
+      radius: 50,
+      pinType: 'spot',
+      autoPlay: false,
+      bBlock: { id: 'bk-daewoongjeon-b', src: '/audio/bk-daewoongjeon-b.mp3' },
+    },
+    {
+      id: 'bk-geuktakjeon',
+      name: '극락전',
+      lat: 35.78994,
+      lng: 129.33224,
+      radius: 50,
+      pinType: 'spot',
+      autoPlay: false,
+      bBlock: { id: 'bk-geuktakjeon-b', src: '/audio/bk-geuktakjeon-b.mp3' },
+    },
+  ],
 };
 
 export const ALL_ATTRACTIONS: Attraction[] = [daereungwon, cheomseongdae, woljeongyo, gyochonMaeul, donggungWolji, bulguksa];
