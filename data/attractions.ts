@@ -195,4 +195,14 @@ export const donggungWolji: Attraction = {
   ],
 };
 
-export const ALL_ATTRACTIONS: Attraction[] = [daereungwon, cheomseongdae, woljeongyo, gyochonMaeul, donggungWolji];
+export const bulguksa: Attraction = {
+  id: 'bulguksa',
+  name: '불국사',
+  description: 'UNESCO 세계문화유산, 신라 불교 건축의 정수.',
+  center: { lat: 35.7896, lng: 129.3314 }, // 답사 후 정확한 좌표로 교체
+  defaultZoom: 16,
+  aBlocks: [], // 답사 후 추가
+  pins: [],    // 답사 후 추가
+};
+
+export const ALL_ATTRACTIONS: Attraction[] = [daereungwon, cheomseongdae, woljeongyo, gyochonMaeul, donggungWolji, bulguksa];
