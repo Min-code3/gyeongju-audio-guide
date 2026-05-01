@@ -146,4 +146,53 @@ export const gyochonMaeul: Attraction = {
   ],
 };
 
-export const ALL_ATTRACTIONS: Attraction[] = [daereungwon, cheomseongdae, woljeongyo, gyochonMaeul];
+export const donggungWolji: Attraction = {
+  id: 'donggung-wolji',
+  name: '동궁과월지',
+  description: '신라 왕궁의 별궁, 야경이 아름다운 연못.',
+  center: { lat: 35.8345, lng: 129.2247 },
+  defaultZoom: 16,
+  aBlocks: [
+    { id: 'dw-a1', src: '/audio/dw-a1.mp3' },
+    { id: 'dw-a2', src: '/audio/dw-a2.mp3' },
+    { id: 'dw-a3', src: '/audio/dw-a3.mp3' },
+    { id: 'dw-a4', src: '/audio/dw-a4.mp3' },
+    { id: 'dw-a5', src: '/audio/dw-a5.mp3' },
+  ],
+  pins: [
+    {
+      id: 'dw-photo1',
+      name: '포토스팟 1',
+      lat: 35.83564,
+      lng: 129.22723,
+      radius: 0,
+      pinType: 'photo',
+    },
+    {
+      id: 'dw-photo2',
+      name: '포토스팟 2',
+      lat: 35.83471,
+      lng: 129.22772,
+      radius: 0,
+      pinType: 'photo',
+    },
+    {
+      id: 'dw-photo3',
+      name: '포토스팟 3',
+      lat: 35.83386,
+      lng: 129.22702,
+      radius: 0,
+      pinType: 'photo',
+    },
+    {
+      id: 'dw-photo4',
+      name: '포토스팟 4',
+      lat: 35.83486,
+      lng: 129.22604,
+      radius: 0,
+      pinType: 'photo',
+    },
+  ],
+};
+
+export const ALL_ATTRACTIONS: Attraction[] = [daereungwon, cheomseongdae, woljeongyo, gyochonMaeul, donggungWolji];
