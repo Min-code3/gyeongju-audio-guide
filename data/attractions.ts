@@ -131,6 +131,15 @@ export const gyochonMaeul: Attraction = {
       autoPlay: false, // C가이드
       bBlock: { id: 'gc-anchae-b', src: '/audio/gc-anchae-b.mp3' },
     },
+    {
+      id: 'gc-photo',
+      name: '포토스팟',
+      lat: 35.83062,
+      lng: 129.21751,
+      radius: 0,
+      pinType: 'photo',
+      // 오디오 없음 — 지도 마커 전용
+    },
   ],
 };
 
