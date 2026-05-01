@@ -60,7 +60,10 @@ export const woljeongyo: Attraction = {
   description: '신라 시대 복원된 아름다운 목조 교량.',
   center: { lat: 35.82909, lng: 129.21707 },
   defaultZoom: 17,
-  aBlocks: [],
+  aBlocks: [
+    { id: 'wj-a1', src: '/audio/wj-a1.mp3' },
+    { id: 'wj-a2', src: '/audio/wj-a2.mp3' },
+  ],
   pins: [
     {
       id: 'wj-photo1',
