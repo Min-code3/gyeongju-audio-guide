@@ -88,7 +88,7 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
       set({ status: 'A_PLAYING', aBlockIndex: nextIndex, triggeredPinId: null });
     } else {
       // A guide done — play any unvisited B guides automatically
-      const unvisited = attraction.pins.find((p) => !visitedPinIds.includes(p.id));
+      const unvisited = attraction.pins.find((p) => !visitedPinIds.includes(p.id) && p.autoPlay !== false && p.bBlock);
       if (unvisited) {
         set({
           status: 'B_PLAYING',
@@ -174,7 +174,7 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
       set({ status: 'A_PLAYING', aBlockIndex: nextIndex });
     } else {
       // A guide done — play any unvisited B guides automatically
-      const unvisited = attraction.pins.find((p) => !visitedPinIds.includes(p.id));
+      const unvisited = attraction.pins.find((p) => !visitedPinIds.includes(p.id) && p.autoPlay !== false && p.bBlock);
       if (unvisited) {
         set({
           status: 'B_PLAYING',

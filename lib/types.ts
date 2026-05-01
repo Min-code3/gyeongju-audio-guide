@@ -10,6 +10,7 @@ export interface Pin {
   lng: number;
   radius: number;
   pinType?: 'photo' | 'spot';
+  autoPlay?: boolean; // default true (B guide) — false = C guide (GPS/click only, no auto-play after A ends)
   bBlock?: AudioBlock; // optional — if absent, pin is a map marker only
 }
 
