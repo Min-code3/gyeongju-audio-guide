@@ -228,7 +228,26 @@ export const bulguksa: Attraction = {
       autoPlay: false,
       bBlock: { id: 'bk-yaksuteo-b', src: '/audio/bk-yaksuteo-b.mp3' },
     },
-    // 다보탑 / 석가탑 — 좌표 추가 예정
+    {
+      id: 'bk-dabotap',
+      name: '다보탑',
+      lat: 35.7900,
+      lng: 129.3322,
+      radius: 30,
+      pinType: 'spot',
+      autoPlay: false,
+      bBlock: { id: 'bk-dabotap-b', src: '/audio/bk-dabotap-b.mp3' },
+    },
+    {
+      id: 'bk-seokgatap',
+      name: '석가탑',
+      lat: 35.7900,
+      lng: 129.3322,
+      radius: 30,
+      pinType: 'spot',
+      autoPlay: false,
+      bBlock: { id: 'bk-seokgatap-b', src: '/audio/bk-seokgatap-b.mp3' },
+    },
     // ── 루트 핀 (번호 있음) ────────────────────────────────────────
     {
       id: 'bk-baekungyo',
