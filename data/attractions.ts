@@ -89,7 +89,9 @@ export const gyochonMaeul: Attraction = {
   description: '경주 최씨 고택이 있는 전통 한옥 마을.',
   center: { lat: 35.83090, lng: 129.21620 },
   defaultZoom: 17,
-  aBlocks: [],
+  aBlocks: [
+    { id: 'gc-a1', src: '/audio/gc-a1.mp3' },
+  ],
   pins: [
     {
       id: 'gc-choebuza',
