@@ -18,7 +18,7 @@ export const daereungwon: Attraction = {
       name: '천마총',
       lat: 35.83820,
       lng: 129.21050,
-      radius: 100,
+      radius: 50,
       pinType: 'spot',
       bBlock: { id: 'dr-cheonmachong-b', src: '/audio/dr-cheonmachong-b.mp3' },
     },
