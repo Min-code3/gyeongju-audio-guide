@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useGuideStore } from '@/lib/store';
-import { isWithinRadius } from '@/lib/geofence';
+import { isWithinRadius, getDistanceMeters } from '@/lib/geofence';
 import { getAudio } from '@/lib/audioElement';
 
 export default function AudioEngine() {
@@ -10,7 +10,7 @@ export default function AudioEngine() {
     attraction, status, aBlockIndex, triggeredPinId,
     setUserPosition, setPlayerControls,
     setIsPlaying, setProgress, setDuration,
-    onABlockEnd, onBBlockEnd, triggerPin,
+    onABlockEnd, onBBlockEnd, triggerPin, triggerPinImmediate,
   } = useGuideStore();
 
   const rafRef = useRef<number>(0);
@@ -24,19 +24,24 @@ export default function AudioEngine() {
         const { latitude: lat, longitude: lng, accuracy } = pos.coords;
         setUserPosition({ lat, lng, accuracy });
 
-        const { status: s, attraction: a } = useGuideStore.getState();
+        const { status: s, attraction: a, autoPlayEnabled, isPlaying, visitedPinIds } = useGuideStore.getState();
         if (!a) return;
-        // For attractions with no A-guide, GPS works even in IDLE
-        const noAGuide = a.aBlocks.length === 0;
-        if (!noAGuide && (s === 'IDLE' || s === 'GUIDE_ENDED')) return;
-        if (s === 'GUIDE_ENDED' && !noAGuide) return;
+        if (s === 'B_PLAYING') return;
 
-        for (const pin of a.pins) {
-          if (!pin.bBlock || pin.radius === 0) continue;
-          if (isWithinRadius(lat, lng, pin.lat, pin.lng, pin.radius)) {
-            triggerPin(pin.id);
-            break;
-          }
+        // Find closest pin within its radius (not yet visited, has audio)
+        const closest = a.pins
+          .filter((p) => p.bBlock && p.radius > 0 && !visitedPinIds.includes(p.id))
+          .map((p) => ({ pin: p, dist: getDistanceMeters(lat, lng, p.lat, p.lng) }))
+          .filter(({ pin, dist }) => dist <= pin.radius)
+          .sort((a, b) => a.dist - b.dist)[0];
+
+        if (!closest) return;
+
+        if (autoPlayEnabled && s === 'A_PLAYING' && !isPlaying) {
+          // Paused + autoPlay ON → immediately jump to B-guide
+          triggerPinImmediate(closest.pin.id);
+        } else {
+          triggerPin(closest.pin.id);
         }
       },
       (err) => console.warn('GPS error:', err.message),

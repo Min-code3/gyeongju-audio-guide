@@ -16,7 +16,7 @@ export default function GuidePage() {
   const { id } = useParams<{ id: string }>();
   const attraction = ALL_ATTRACTIONS.find((a) => a.id === id);
 
-  const { setAttraction, startGuide, userPosition } = useGuideStore();
+  const { setAttraction, startGuide, userPosition, autoPlayEnabled, toggleAutoPlay } = useGuideStore();
 
   useEffect(() => {
     if (attraction) setAttraction(attraction);
@@ -43,6 +43,18 @@ export default function GuidePage() {
       >
         ← Back
       </Link>
+
+      {/* Auto-play toggle */}
+      <button
+        onClick={toggleAutoPlay}
+        className={`absolute top-4 right-4 z-50 rounded-full px-3 py-1.5 text-xs font-medium shadow-md transition-colors ${
+          autoPlayEnabled
+            ? 'bg-amber-600 text-white'
+            : 'bg-white text-stone-400'
+        }`}
+      >
+        {autoPlayEnabled ? '자동 ON' : '자동 OFF'}
+      </button>
 
       {/* Full-screen map */}
       <div className="absolute inset-0 bottom-40">

@@ -30,7 +30,11 @@ interface GuideStore {
   prevBlock: () => void;
   nextBlock: () => void;
 
+  autoPlayEnabled: boolean;
+  toggleAutoPlay: () => void;
+
   triggerPin: (pinId: string) => void;
+  triggerPinImmediate: (pinId: string) => void; // bypass pending — used when paused + auto ON
   triggerPinManual: (pinId: string) => void;
 
   onABlockEnd: () => void;
@@ -56,6 +60,9 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
   setIsPlaying: (v) => set({ isPlaying: v }),
   setProgress: (v) => set({ progress: v }),
   setDuration: (v) => set({ duration: v }),
+
+  autoPlayEnabled: true,
+  toggleAutoPlay: () => set((s) => ({ autoPlayEnabled: !s.autoPlayEnabled })),
 
   seekTo: () => {},
   togglePause: () => {},
@@ -120,7 +127,7 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
   triggerPin: (pinId: string) => {
     const { attraction, status, visitedPinIds } = get();
     const pin = attraction?.pins.find((p) => p.id === pinId);
-    if (!pin?.bBlock) return; // marker-only pin, no audio
+    if (!pin?.bBlock) return;
     if (visitedPinIds.includes(pinId)) return;
 
     if (status === 'A_PLAYING') {
@@ -133,6 +140,20 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
         visitedPinIds: [...visitedPinIds, pinId],
       });
     }
+  },
+
+  // Immediately switch to B-guide, bypassing current A-block (used when paused + autoPlay ON)
+  triggerPinImmediate: (pinId: string) => {
+    const { attraction, visitedPinIds } = get();
+    const pin = attraction?.pins.find((p) => p.id === pinId);
+    if (!pin?.bBlock) return;
+    if (visitedPinIds.includes(pinId)) return;
+    set({
+      status: 'B_PLAYING',
+      triggeredPinId: pinId,
+      pendingPinId: null,
+      visitedPinIds: [...visitedPinIds, pinId],
+    });
   },
 
   triggerPinManual: (pinId: string) => {
