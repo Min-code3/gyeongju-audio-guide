@@ -25,9 +25,9 @@ export const daereungwon: Attraction = {
     {
       id: 'photospot',
       name: '목련 포토스팟',
-      lat: 35.83882,
-      lng: 129.21316,
-      radius: 100,
+      lat: 35.83884,
+      lng: 129.21350,
+      radius: 50,
       pinType: 'photo',
       bBlock: { id: 'dr-photospot-b', src: '/audio/dr-photospot-b.mp3' },
     },
