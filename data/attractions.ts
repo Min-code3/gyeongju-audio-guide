@@ -312,8 +312,8 @@ export const bulguksa: Attraction = {
     {
       id: 'bk-geuktakjeon',
       name: '극락전',
-      lat: 35.78994,
-      lng: 129.33224,
+      lat: 35.78989,
+      lng: 129.33162,
       radius: 50,
       pinType: 'spot',
       autoPlay: false,
