@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ALL_ATTRACTIONS } from '@/data/attractions';
@@ -17,18 +17,27 @@ export default function GuidePage() {
   const attraction = ALL_ATTRACTIONS.find((a) => a.id === id);
 
   const { setAttraction, startGuide, userPosition, autoPlayEnabled, toggleAutoPlay } = useGuideStore();
+  const [showPrompt, setShowPrompt] = useState(false);
 
   useEffect(() => {
     if (attraction) setAttraction(attraction);
   }, [attraction, setAttraction]);
 
-  const handleStart = () => {
-    // iOS unlock: play a silent 1-sample WAV on the SAME audio element.
-    // Once this element is played from a user gesture, iOS allows all future
-    // play() calls on it (even async) — including src changes by AudioEngine.
+  const handleStartClick = () => {
+    // Show auto-play prompt before starting
+    setShowPrompt(true);
+  };
+
+  const handleConfirm = (autoOn: boolean) => {
+    // Sync store with user's choice
+    if (autoOn !== autoPlayEnabled) toggleAutoPlay();
+
+    // iOS unlock
     const audio = getAudio();
     audio.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA';
     audio.play().catch(() => {});
+
+    setShowPrompt(false);
     startGuide();
   };
 
@@ -44,16 +53,14 @@ export default function GuidePage() {
         ← Back
       </Link>
 
-      {/* Auto-play toggle */}
+      {/* Auto-play toggle — top center */}
       <button
         onClick={toggleAutoPlay}
-        className={`absolute top-4 right-4 z-50 rounded-full px-3 py-1.5 text-xs font-medium shadow-md transition-colors ${
-          autoPlayEnabled
-            ? 'bg-amber-600 text-white'
-            : 'bg-white text-stone-400'
+        className={`absolute top-4 left-1/2 -translate-x-1/2 z-50 rounded-full px-4 py-1.5 text-xs font-medium shadow-md transition-colors ${
+          autoPlayEnabled ? 'bg-amber-600 text-white' : 'bg-white text-stone-400'
         }`}
       >
-        {autoPlayEnabled ? '자동 ON' : '자동 OFF'}
+        {autoPlayEnabled ? '자동재생 ON' : '자동재생 OFF'}
       </button>
 
       {/* Full-screen map */}
@@ -61,11 +68,35 @@ export default function GuidePage() {
         <Map attraction={attraction} userPosition={userPosition} />
       </div>
 
-      {/* Logic-only layer */}
       <AudioEngine />
 
-      {/* Bottom player */}
-      <PlayerBar attraction={attraction} onStart={handleStart} />
+      <PlayerBar attraction={attraction} onStart={handleStartClick} />
+
+      {/* Auto-play prompt */}
+      {showPrompt && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-3xl mx-6 px-6 pt-6 pb-7 shadow-xl">
+            <p className="text-base font-bold text-stone-800 mb-1 text-center">자동 재생</p>
+            <p className="text-sm text-stone-400 text-center mb-6 leading-relaxed">
+              핀 반경에 들어서면 오디오가{'\n'}자동으로 재생됩니다.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => handleConfirm(false)}
+                className="flex-1 py-3 rounded-2xl border border-stone-200 text-sm text-stone-500 font-medium active:bg-stone-50"
+              >
+                수동으로 할게요
+              </button>
+              <button
+                onClick={() => handleConfirm(true)}
+                className="flex-1 py-3 rounded-2xl bg-amber-600 text-white text-sm font-semibold active:bg-amber-700"
+              >
+                자동 재생 ON
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
