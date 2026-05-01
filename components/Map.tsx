@@ -19,10 +19,34 @@ const MAP_STYLES = [
 
 const CIRCLE_PATH = 0 as unknown as google.maps.SymbolPath;
 
-function pinColor(pin: Pin, isActive: boolean, isVisited: boolean): string {
-  if (isVisited) return '#9ca3af';
-  if (isActive) return '#d97706';
-  return pin.pinType === 'photo' ? '#10b981' : '#1d4ed8';
+function pinIcon(pin: Pin, isActive: boolean, isVisited: boolean): google.maps.Symbol | google.maps.Icon {
+  const opacity = isVisited ? 0.4 : 1;
+
+  if (pin.routeOrder !== undefined) {
+    // Numbered circle — SVG
+    const color = isActive ? '#d97706' : (pin.isMainRoute !== false ? '#1d4ed8' : '#6b7280');
+    const size = isActive ? 32 : 28;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 1.5}" fill="${color}" stroke="white" stroke-width="2" opacity="${opacity}"/>
+      <text x="${size / 2}" y="${size / 2 + 5}" text-anchor="middle" font-size="${Math.round(size * 0.45)}" font-weight="bold" fill="white" opacity="${opacity}">${pin.routeOrder}</text>
+    </svg>`;
+    return {
+      url: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`,
+      scaledSize: new google.maps.Size(size, size),
+      anchor: new google.maps.Point(size / 2, size / 2),
+    };
+  }
+
+  // Plain circle — no number
+  return {
+    path: CIRCLE_PATH,
+    scale: isActive ? 11 : 8,
+    fillColor: isVisited ? '#9ca3af' : isActive ? '#d97706'
+      : pin.pinType === 'photo' ? '#10b981' : '#1d4ed8',
+    fillOpacity: opacity,
+    strokeColor: '#ffffff',
+    strokeWeight: 2,
+  };
 }
 
 export default function Map({ attraction, userPosition }: MapProps) {
@@ -72,14 +96,7 @@ export default function Map({ attraction, userPosition }: MapProps) {
             <Marker
               key={pin.id}
               position={{ lat: pin.lat, lng: pin.lng }}
-              icon={{
-              path: CIRCLE_PATH,
-              scale: isActive_ ? 11 : 8,
-              fillColor: pinColor(pin, isActive_, isVisited),
-              fillOpacity: 1,
-              strokeColor: '#ffffff',
-              strokeWeight: 2,
-            }}
+              icon={pinIcon(pin, isActive_, isVisited) as google.maps.Symbol}
               onClick={() => { if (isActive && pin.bBlock) triggerPinManual(pin.id); }}
             />
           );
