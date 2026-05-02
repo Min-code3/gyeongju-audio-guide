@@ -27,7 +27,15 @@ export default function TourPage() {
   };
 
   return (
-    <main className="flex flex-col h-dvh overflow-hidden bg-stone-50">
+    <main className="relative flex flex-col h-dvh overflow-hidden bg-stone-50">
+      {/* Back button — top left, same as guide page */}
+      <button
+        onClick={() => router.back()}
+        className="absolute top-4 left-4 z-50 bg-white rounded-full px-3 py-1.5 text-xs text-stone-600 shadow-md"
+      >
+        ← Back
+      </button>
+
       {/* Map */}
       <div className="h-[45vh] shrink-0">
         <TourMap
@@ -40,7 +48,6 @@ export default function TourPage() {
 
       {/* Header */}
       <div className="px-5 pt-4 pb-2 bg-stone-50">
-        <Link href="/" className="text-xs text-stone-400 mb-1 block">← Back</Link>
         <h1 className="text-lg font-bold text-stone-800">{tour.name}</h1>
       </div>
 

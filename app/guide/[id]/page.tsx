@@ -2,8 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import { useParams, notFound } from 'next/navigation';
-import Link from 'next/link';
+import { useParams, notFound, useRouter } from 'next/navigation';
 import { ALL_ATTRACTIONS } from '@/data/attractions';
 import { useGuideStore } from '@/lib/store';
 import { getAudio } from '@/lib/audioElement';
@@ -16,6 +15,7 @@ export default function GuidePage() {
   const { id } = useParams<{ id: string }>();
   const attraction = ALL_ATTRACTIONS.find((a) => a.id === id);
 
+  const router = useRouter();
   const { setAttraction, startGuide, userPosition, autoPlayEnabled, toggleAutoPlay } = useGuideStore();
   const [showPrompt, setShowPrompt] = useState(false);
 
@@ -46,12 +46,12 @@ export default function GuidePage() {
   return (
     <main className="relative w-full h-dvh overflow-hidden bg-stone-100">
       {/* Back button */}
-      <Link
-        href="/"
+      <button
+        onClick={() => router.back()}
         className="absolute top-4 left-4 z-50 bg-white rounded-full px-3 py-1.5 text-xs text-stone-600 shadow-md"
       >
         ← Back
-      </Link>
+      </button>
 
       {/* Auto-play toggle — top center */}
       <button
