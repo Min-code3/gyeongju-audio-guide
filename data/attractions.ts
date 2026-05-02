@@ -8,9 +8,8 @@ export const daereungwon: Attraction = {
   center: { lat: 35.83851, lng: 129.21183 },
   defaultZoom: 16,
   aBlocks: [
-    { id: 'dr-a1', src: '/audio/dr-a1.mp3' },
-    { id: 'dr-a2', src: '/audio/dr-a2.mp3' },
-    { id: 'dr-a3', src: '/audio/dr-a3.mp3' },
+    { id: 'dr-a1', src: '/audio/dr-a1.mp3', title: 'Daereungwon' },
+    { id: 'dr-a3', src: '/audio/dr-a3.mp3', title: 'Hill-like Tombs' },
     // a4, a5, a6 추가 예정
   ],
   pins: [
@@ -21,7 +20,7 @@ export const daereungwon: Attraction = {
       lng: 129.21050,
       radius: 50,
       pinType: 'spot',
-      bBlock: { id: 'dr-cheonmachong-b', src: '/audio/dr-cheonmachong-b.mp3' },
+      bBlock: { id: 'dr-cheonmachong-b', src: '/audio/dr-cheonmachong-b.mp3', title: 'Cheonmachong' },
     },
     {
       id: 'photospot',
@@ -30,7 +29,7 @@ export const daereungwon: Attraction = {
       lng: 129.21350,
       radius: 50,
       pinType: 'photo',
-      bBlock: { id: 'dr-photospot-b', src: '/audio/dr-photospot-b.mp3' },
+      bBlock: { id: 'dr-photospot-b', src: '/audio/dr-photospot-b.mp3', title: 'Photo Spot' },
     },
   ],
 };
@@ -64,8 +63,8 @@ export const woljeongyo: Attraction = {
   center: { lat: 35.82909, lng: 129.21707 },
   defaultZoom: 17,
   aBlocks: [
-    { id: 'wj-a1', src: '/audio/wj-a1.mp3' },
-    { id: 'wj-a2', src: '/audio/wj-a2.mp3' },
+    { id: 'wj-a1', src: '/audio/wj-a1.mp3', title: 'Woljeonggyo Bridge' },
+    { id: 'wj-a2', src: '/audio/wj-a2.mp3', title: 'Origin of the Name' },
   ],
   pins: [
     {
@@ -97,7 +96,7 @@ export const gyochonMaeul: Attraction = {
   center: { lat: 35.83090, lng: 129.21620 },
   defaultZoom: 17,
   aBlocks: [
-    { id: 'gc-a1', src: '/audio/gc-a1.mp3' },
+    { id: 'gc-a1', src: '/audio/gc-a1.mp3', title: 'Gyochon Village' },
   ],
   pins: [
     {
@@ -116,7 +115,7 @@ export const gyochonMaeul: Attraction = {
       lng: 129.21567,
       radius: 30,
       pinType: 'spot',
-      bBlock: { id: 'gc-tteok-b', src: '/audio/gc-tteok-b.mp3' },
+      bBlock: { id: 'gc-tteok-b', src: '/audio/gc-tteok-b.mp3', title: 'Rice Cake-Pounding Experience' },
     },
     {
       id: 'gc-duiju',
@@ -126,7 +125,7 @@ export const gyochonMaeul: Attraction = {
       radius: 30,
       pinType: 'spot',
       autoPlay: false, // C가이드 — GPS/클릭만, A 끝난 후 자동재생 없음
-      bBlock: { id: 'gc-duiju-c', src: '/audio/gc-duiju-c.mp3' },
+      bBlock: { id: 'gc-duiju-c', src: '/audio/gc-duiju-c.mp3', title: 'Rice Box' },
     },
     {
       id: 'gc-anchae',
@@ -136,7 +135,7 @@ export const gyochonMaeul: Attraction = {
       radius: 30,
       pinType: 'spot',
       autoPlay: false, // C가이드
-      bBlock: { id: 'gc-anchae-c', src: '/audio/gc-anchae-c.mp3' },
+      bBlock: { id: 'gc-anchae-c', src: '/audio/gc-anchae-c.mp3', title: 'Anchae for Women' },
     },
     {
       id: 'gc-photo',
@@ -158,10 +157,10 @@ export const donggungWolji: Attraction = {
   center: { lat: 35.8345, lng: 129.2247 },
   defaultZoom: 16,
   aBlocks: [
-    { id: 'dw-a1', src: '/audio/dw-a1.mp3' },
-    { id: 'dw-a2', src: '/audio/dw-a2.mp3' },
-    { id: 'dw-a3', src: '/audio/dw-a3.mp3' },
-    { id: 'dw-a4', src: '/audio/dw-a4.mp3' },
+    { id: 'dw-a1', src: '/audio/dw-a1.mp3', title: 'Donggung Palace and Wolji Pond' },
+    { id: 'dw-a2', src: '/audio/dw-a2.mp3', title: 'Dice' },
+    { id: 'dw-a3', src: '/audio/dw-a3.mp3', title: 'The Forest on the Roof' },
+    { id: 'dw-a4', src: '/audio/dw-a4.mp3', title: 'Mirror-like Night Reflections' },
     // dw-a5 추가 예정
   ],
   pins: [
@@ -208,7 +207,7 @@ export const bulguksa: Attraction = {
   center: { lat: 35.7896, lng: 129.3316 },
   defaultZoom: 17,
   aBlocks: [
-    { id: 'bk-a1', src: '/audio/bk-a1.m4a' },
+    { id: 'bk-a1', src: '/audio/bk-a1.m4a', title: 'Bulguksa Temple' },
   ],
   pins: [
     // ── 넘버링 없는 파란색 핀 ──────────────────────────────────────
@@ -220,7 +219,7 @@ export const bulguksa: Attraction = {
       radius: 20,
       pinType: 'spot',
       autoPlay: false,
-      bBlock: { id: 'bk-cheonwangmun-c', src: '/audio/bk-cheonwangmun-c.m4a' },
+      bBlock: { id: 'bk-cheonwangmun-c', src: '/audio/bk-cheonwangmun-c.m4a', title: 'The Four Guardians Gate, Cheonwangmun' },
     },
     {
       id: 'bk-yaksuteo',
@@ -230,7 +229,7 @@ export const bulguksa: Attraction = {
       radius: 20,
       pinType: 'spot',
       autoPlay: false,
-      bBlock: { id: 'bk-yaksuteo-c', src: '/audio/bk-yaksuteo-c.m4a' },
+      bBlock: { id: 'bk-yaksuteo-c', src: '/audio/bk-yaksuteo-c.m4a', title: 'The Spring Water' },
     },
     {
       id: 'bk-dabotap',
@@ -240,7 +239,7 @@ export const bulguksa: Attraction = {
       radius: 20,
       pinType: 'spot',
       autoPlay: false,
-      bBlock: { id: 'bk-dabotap-c', src: '/audio/bk-dabotap-c.m4a' },
+      bBlock: { id: 'bk-dabotap-c', src: '/audio/bk-dabotap-c.m4a', title: 'Pagoda on the Korean 10-Won Coin, Dabotap' },
     },
     {
       id: 'bk-seokgatap',
@@ -250,7 +249,7 @@ export const bulguksa: Attraction = {
       radius: 20,
       pinType: 'spot',
       autoPlay: false,
-      bBlock: { id: 'bk-seokgatap-c', src: '/audio/bk-seokgatap-c.m4a' },
+      bBlock: { id: 'bk-seokgatap-c', src: '/audio/bk-seokgatap-c.m4a', title: 'The Shadowless Pagoda, Seokgatap' },
     },
     // ── 루트 핀 (번호 있음) ────────────────────────────────────────
     {
@@ -263,7 +262,7 @@ export const bulguksa: Attraction = {
       autoPlay: false,
       routeOrder: 1,
       isMainRoute: true,
-      bBlock: { id: 'bk-baekungyo-c', src: '/audio/bk-baekungyo-c.m4a' },
+      bBlock: { id: 'bk-baekungyo-c', src: '/audio/bk-baekungyo-c.m4a', title: 'The Cloud Bridges, Cheongungyo & Baegungyo' },
     },
     {
       id: 'bk-daewoongjeon',
@@ -275,7 +274,7 @@ export const bulguksa: Attraction = {
       autoPlay: false,
       routeOrder: 2,
       isMainRoute: true,
-      bBlock: { id: 'bk-daewoongjeon-c', src: '/audio/bk-daewoongjeon-c.m4a' },
+      bBlock: { id: 'bk-daewoongjeon-c', src: '/audio/bk-daewoongjeon-c.m4a', title: 'The Main Hall, Daeungjeon' },
     },
     {
       id: 'bk-museoljeon',
@@ -287,7 +286,7 @@ export const bulguksa: Attraction = {
       autoPlay: false,
       routeOrder: 3,
       isMainRoute: false,
-      bBlock: { id: 'bk-museoljeon-c', src: '/audio/bk-museoljeon-c.m4a' },
+      bBlock: { id: 'bk-museoljeon-c', src: '/audio/bk-museoljeon-c.m4a', title: 'The Hall of No Words, Museoljeon' },
     },
     {
       id: 'bk-gwaneumjeon',
@@ -299,7 +298,7 @@ export const bulguksa: Attraction = {
       autoPlay: false,
       routeOrder: 4,
       isMainRoute: false,
-      bBlock: { id: 'bk-gwaneumjeon-c', src: '/audio/bk-gwaneumjeon-c.m4a' },
+      bBlock: { id: 'bk-gwaneumjeon-c', src: '/audio/bk-gwaneumjeon-c.m4a', title: 'Buddha with Countless Hands, Gwaneumjeon' },
     },
     {
       id: 'bk-saritap',
@@ -311,7 +310,7 @@ export const bulguksa: Attraction = {
       autoPlay: false,
       routeOrder: 5,
       isMainRoute: false,
-      bBlock: { id: 'bk-saritap-c', src: '/audio/bk-saritap-c.m4a' },
+      bBlock: { id: 'bk-saritap-c', src: '/audio/bk-saritap-c.m4a', title: 'The Relic Pagoda, Saritap' },
     },
     {
       id: 'bk-geuktakjeon',
@@ -323,7 +322,7 @@ export const bulguksa: Attraction = {
       autoPlay: false,
       routeOrder: 6,
       isMainRoute: true,
-      bBlock: { id: 'bk-geuktakjeon-c', src: '/audio/bk-geuktakjeon-c.m4a' },
+      bBlock: { id: 'bk-geuktakjeon-c', src: '/audio/bk-geuktakjeon-c.m4a', title: 'The Paradise and the Golden Pig, Geungnakjeon' },
     },
   ],
 };
@@ -337,7 +336,7 @@ export const bulguksaTest: Attraction = {
   center: { lat: 37.62057, lng: 126.74597 },
   defaultZoom: 17,
   aBlocks: [
-    { id: 'bk-a1', src: '/audio/bk-a1.m4a' },
+    { id: 'bk-a1', src: '/audio/bk-a1.m4a', title: 'Bulguksa Temple' },
   ],
   pins: [
     {
@@ -348,7 +347,7 @@ export const bulguksaTest: Attraction = {
       radius: 20,
       pinType: 'spot',
       autoPlay: false,
-      bBlock: { id: 'bk-cheonwangmun-c', src: '/audio/bk-cheonwangmun-c.m4a' },
+      bBlock: { id: 'bk-cheonwangmun-c', src: '/audio/bk-cheonwangmun-c.m4a', title: 'The Four Guardians Gate, Cheonwangmun' },
     },
     {
       id: 'test-yaksuteo',
@@ -358,7 +357,7 @@ export const bulguksaTest: Attraction = {
       radius: 20,
       pinType: 'spot',
       autoPlay: false,
-      bBlock: { id: 'bk-yaksuteo-c', src: '/audio/bk-yaksuteo-c.m4a' },
+      bBlock: { id: 'bk-yaksuteo-c', src: '/audio/bk-yaksuteo-c.m4a', title: 'The Spring Water' },
     },
     {
       id: 'test-dabotap',
@@ -368,7 +367,7 @@ export const bulguksaTest: Attraction = {
       radius: 20,
       pinType: 'spot',
       autoPlay: false,
-      bBlock: { id: 'bk-dabotap-c', src: '/audio/bk-dabotap-c.m4a' },
+      bBlock: { id: 'bk-dabotap-c', src: '/audio/bk-dabotap-c.m4a', title: 'Pagoda on the Korean 10-Won Coin, Dabotap' },
     },
     {
       id: 'test-seokgatap',
@@ -378,7 +377,7 @@ export const bulguksaTest: Attraction = {
       radius: 20,
       pinType: 'spot',
       autoPlay: false,
-      bBlock: { id: 'bk-seokgatap-c', src: '/audio/bk-seokgatap-c.m4a' },
+      bBlock: { id: 'bk-seokgatap-c', src: '/audio/bk-seokgatap-c.m4a', title: 'The Shadowless Pagoda, Seokgatap' },
     },
     {
       id: 'test-baekungyo',
@@ -390,7 +389,7 @@ export const bulguksaTest: Attraction = {
       autoPlay: false,
       routeOrder: 1,
       isMainRoute: true,
-      bBlock: { id: 'bk-baekungyo-c', src: '/audio/bk-baekungyo-c.m4a' },
+      bBlock: { id: 'bk-baekungyo-c', src: '/audio/bk-baekungyo-c.m4a', title: 'The Cloud Bridges, Cheongungyo & Baegungyo' },
     },
     {
       id: 'test-daewoongjeon',
@@ -402,7 +401,7 @@ export const bulguksaTest: Attraction = {
       autoPlay: false,
       routeOrder: 2,
       isMainRoute: true,
-      bBlock: { id: 'bk-daewoongjeon-c', src: '/audio/bk-daewoongjeon-c.m4a' },
+      bBlock: { id: 'bk-daewoongjeon-c', src: '/audio/bk-daewoongjeon-c.m4a', title: 'The Main Hall, Daeungjeon' },
     },
     {
       id: 'test-museoljeon',
@@ -414,7 +413,7 @@ export const bulguksaTest: Attraction = {
       autoPlay: false,
       routeOrder: 3,
       isMainRoute: false,
-      bBlock: { id: 'bk-museoljeon-c', src: '/audio/bk-museoljeon-c.m4a' },
+      bBlock: { id: 'bk-museoljeon-c', src: '/audio/bk-museoljeon-c.m4a', title: 'The Hall of No Words, Museoljeon' },
     },
     {
       id: 'test-gwaneumjeon',
@@ -426,7 +425,7 @@ export const bulguksaTest: Attraction = {
       autoPlay: false,
       routeOrder: 4,
       isMainRoute: false,
-      bBlock: { id: 'bk-gwaneumjeon-c', src: '/audio/bk-gwaneumjeon-c.m4a' },
+      bBlock: { id: 'bk-gwaneumjeon-c', src: '/audio/bk-gwaneumjeon-c.m4a', title: 'Buddha with Countless Hands, Gwaneumjeon' },
     },
     {
       id: 'test-saritap',
@@ -438,7 +437,7 @@ export const bulguksaTest: Attraction = {
       autoPlay: false,
       routeOrder: 5,
       isMainRoute: false,
-      bBlock: { id: 'bk-saritap-c', src: '/audio/bk-saritap-c.m4a' },
+      bBlock: { id: 'bk-saritap-c', src: '/audio/bk-saritap-c.m4a', title: 'The Relic Pagoda, Saritap' },
     },
     {
       id: 'test-geuktakjeon',
@@ -450,7 +449,7 @@ export const bulguksaTest: Attraction = {
       autoPlay: false,
       routeOrder: 6,
       isMainRoute: true,
-      bBlock: { id: 'bk-geuktakjeon-c', src: '/audio/bk-geuktakjeon-c.m4a' },
+      bBlock: { id: 'bk-geuktakjeon-c', src: '/audio/bk-geuktakjeon-c.m4a', title: 'The Paradise and the Golden Pig, Geungnakjeon' },
     },
   ],
 };
