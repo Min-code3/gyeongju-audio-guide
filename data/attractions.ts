@@ -3,7 +3,7 @@ import { Attraction } from '@/lib/types';
 export const daereungwon: Attraction = {
   id: 'daereungwon',
   name: '대릉원',
-  description: '경주 시내 한복판, 신라 왕과 귀족들이 잠든 23기의 고분군.',
+  description: 'A royal tumuli park in the heart of Gyeongju, home to 23 ancient Silla tombs.',
   center: { lat: 35.83851, lng: 129.21183 },
   defaultZoom: 16,
   aBlocks: [
@@ -37,7 +37,7 @@ export const daereungwon: Attraction = {
 export const cheomseongdae: Attraction = {
   id: 'cheomseongdae',
   name: '첨성대',
-  description: '동양에서 가장 오래된 천문대, 신라 선덕여왕 시대의 유산.',
+  description: 'The oldest existing astronomical observatory in East Asia, built during the Silla Kingdom.',
   center: { lat: 35.83452, lng: 129.21900 },
   defaultZoom: 17,
   aBlocks: [],
@@ -57,7 +57,7 @@ export const cheomseongdae: Attraction = {
 export const woljeongyo: Attraction = {
   id: 'woljeongyo',
   name: '월정교',
-  description: '신라 시대 복원된 아름다운 목조 교량.',
+  description: 'A beautifully restored wooden bridge from the Silla era.',
   center: { lat: 35.82909, lng: 129.21707 },
   defaultZoom: 17,
   aBlocks: [
@@ -89,7 +89,7 @@ export const woljeongyo: Attraction = {
 export const gyochonMaeul: Attraction = {
   id: 'gyochon-maeul',
   name: '교촌마을',
-  description: '경주 최씨 고택이 있는 전통 한옥 마을.',
+  description: 'A traditional hanok village, home to the historic Choe family estate.',
   center: { lat: 35.83090, lng: 129.21620 },
   defaultZoom: 17,
   aBlocks: [
@@ -149,7 +149,7 @@ export const gyochonMaeul: Attraction = {
 export const donggungWolji: Attraction = {
   id: 'donggung-wolji',
   name: '동궁과월지',
-  description: '신라 왕궁의 별궁, 야경이 아름다운 연못.',
+  description: 'A detached palace of the Silla Kingdom, famous for its stunning night scenery.',
   center: { lat: 35.8345, lng: 129.2247 },
   defaultZoom: 16,
   aBlocks: [
@@ -198,7 +198,7 @@ export const donggungWolji: Attraction = {
 export const bulguksa: Attraction = {
   id: 'bulguksa',
   name: '불국사',
-  description: 'UNESCO 세계문화유산, 신라 불교 건축의 정수.',
+  description: 'A UNESCO World Heritage Site representing the pinnacle of Silla Buddhist architecture.',
   center: { lat: 35.7896, lng: 129.3316 },
   defaultZoom: 17,
   aBlocks: [
@@ -327,7 +327,7 @@ export const bulguksa: Attraction = {
 export const bulguksaTest: Attraction = {
   id: 'bulguksa-test',
   name: '[TEST] 불국사',
-  description: 'GPS 테스트용 — 불국사 핀을 집 근처로 평행이동',
+  description: 'GPS test — Bulguksa pins shifted near home coordinates.',
   center: { lat: 37.62057, lng: 126.74597 },
   defaultZoom: 17,
   aBlocks: [

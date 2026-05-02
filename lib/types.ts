@@ -20,6 +20,7 @@ export interface Attraction {
   id: string;
   name: string;
   description?: string;
+  guideTitle?: string; // shown in audio guide player — falls back to name if not set
   center: { lat: number; lng: number };
   defaultZoom: number;
   aBlocks: AudioBlock[];
