@@ -97,7 +97,7 @@ function PlaylistPanel({ attraction, onClose }: { attraction: Attraction; onClos
                   idx === aBlockIndex && status === 'A_PLAYING'
                     ? 'bg-amber-600 text-white' : 'bg-stone-100 text-stone-400'
                 }`}>{idx + 1}</span>
-                <span className="text-sm text-stone-700">Segment {idx + 1}</span>
+                <span className="text-sm text-stone-700">{block.title ?? `Segment ${idx + 1}`}</span>
               </button>
             ))}
           </div>

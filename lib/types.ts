@@ -1,6 +1,7 @@
 export interface AudioBlock {
   id: string;
   src: string;
+  title?: string; // shown in the playlist panel
 }
 
 export interface Pin {
