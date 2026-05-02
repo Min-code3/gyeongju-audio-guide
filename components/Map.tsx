@@ -143,7 +143,7 @@ export default function Map({ attraction, userPosition }: MapProps) {
         <button
           onClick={handleLocateMe}
           className="absolute bottom-4 right-4 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center active:bg-stone-100 transition-colors"
-          aria-label="현재 위치로 이동"
+          aria-label="My location"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round">
             <circle cx="12" cy="12" r="3" />

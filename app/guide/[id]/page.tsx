@@ -60,7 +60,7 @@ export default function GuidePage() {
           autoPlayEnabled ? 'bg-amber-600 text-white' : 'bg-white text-stone-400'
         }`}
       >
-        {autoPlayEnabled ? '자동재생 ON' : '자동재생 OFF'}
+        {autoPlayEnabled ? 'Auto ON' : 'Auto OFF'}
       </button>
 
       {/* Full-screen map */}
@@ -76,22 +76,22 @@ export default function GuidePage() {
       {showPrompt && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="bg-white rounded-3xl mx-6 px-6 pt-6 pb-7 shadow-xl">
-            <p className="text-base font-bold text-stone-800 mb-1 text-center">자동 재생</p>
+            <p className="text-base font-bold text-stone-800 mb-1 text-center">Auto Play</p>
             <p className="text-sm text-stone-400 text-center mb-6 leading-relaxed">
-              핀 반경에 들어서면 오디오가{'\n'}자동으로 재생됩니다.
+              Audio starts automatically as you approach each spot.
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => handleConfirm(false)}
                 className="flex-1 py-3 rounded-2xl border border-stone-200 text-sm text-stone-500 font-medium active:bg-stone-50"
               >
-                수동으로 할게요
+                Not now
               </button>
               <button
                 onClick={() => handleConfirm(true)}
                 className="flex-1 py-3 rounded-2xl bg-amber-600 text-white text-sm font-semibold active:bg-amber-700"
               >
-                자동 재생 ON
+                Auto Play ON
               </button>
             </div>
           </div>
