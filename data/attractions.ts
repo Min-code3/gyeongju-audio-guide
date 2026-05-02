@@ -103,7 +103,7 @@ export const gyochonMaeul: Attraction = {
       lng: 129.21620,
       radius: 50,
       pinType: 'spot',
-      bBlock: { id: 'gc-choebuza-b', src: '/audio/gc-choebuza-b.mp3' },
+      // 오디오 추가 예정
     },
     {
       id: 'gc-tteok',
@@ -157,7 +157,7 @@ export const donggungWolji: Attraction = {
     { id: 'dw-a2', src: '/audio/dw-a2.mp3' },
     { id: 'dw-a3', src: '/audio/dw-a3.mp3' },
     { id: 'dw-a4', src: '/audio/dw-a4.mp3' },
-    { id: 'dw-a5', src: '/audio/dw-a5.mp3' },
+    // dw-a5 추가 예정
   ],
   pins: [
     {
@@ -203,8 +203,6 @@ export const bulguksa: Attraction = {
   defaultZoom: 17,
   aBlocks: [
     { id: 'bk-a1', src: '/audio/bk-a1.m4a' },
-    { id: 'bk-a2', src: '/audio/bk-a2.m4a' },
-    { id: 'bk-a3', src: '/audio/bk-a3.m4a' },
   ],
   pins: [
     // ── 넘버링 없는 파란색 핀 ──────────────────────────────────────
@@ -334,8 +332,6 @@ export const bulguksaTest: Attraction = {
   defaultZoom: 17,
   aBlocks: [
     { id: 'bk-a1', src: '/audio/bk-a1.m4a' },
-    { id: 'bk-a2', src: '/audio/bk-a2.m4a' },
-    { id: 'bk-a3', src: '/audio/bk-a3.m4a' },
   ],
   pins: [
     {
