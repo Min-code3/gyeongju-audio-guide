@@ -63,14 +63,10 @@ export default function TourPage() {
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1 min-w-0 pr-3">
-                  <p className="text-base font-bold text-stone-800">{attraction.name}</p>
+                  <p className="text-base font-bold text-stone-800">{attraction.guideTitle ?? attraction.name}</p>
                   {attraction.description && (
                     <p className="text-sm text-stone-400 mt-0.5 line-clamp-2">{attraction.description}</p>
                   )}
-                  <p className="text-xs text-stone-300 mt-1">
-                    {attraction.pins.length} spot{attraction.pins.length !== 1 ? 's' : ''}
-                    {attraction.aBlocks.length > 0 ? ` · ${attraction.aBlocks.length} audio segments` : ''}
-                  </p>
                 </div>
                 <span className="text-amber-500 text-lg shrink-0">
                   {isSelected ? '→' : '›'}
