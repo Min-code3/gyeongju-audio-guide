@@ -3,7 +3,8 @@ import { Attraction } from '@/lib/types';
 export const daereungwon: Attraction = {
   id: 'daereungwon',
   name: '대릉원',
-  description: 'A royal tumuli park in the heart of Gyeongju, home to 23 ancient Silla tombs.',
+  guideTitle: 'Daereungwon',
+  description: 'A historical park with 23 ancient tombs.',
   center: { lat: 35.83851, lng: 129.21183 },
   defaultZoom: 16,
   aBlocks: [
@@ -37,7 +38,8 @@ export const daereungwon: Attraction = {
 export const cheomseongdae: Attraction = {
   id: 'cheomseongdae',
   name: '첨성대',
-  description: 'The oldest existing astronomical observatory in East Asia, built during the Silla Kingdom.',
+  guideTitle: 'Cheomseongdae',
+  description: "The oldest surviving observatory in the world, built during the reign of Silla's Queen Seondeok.",
   center: { lat: 35.83452, lng: 129.21900 },
   defaultZoom: 17,
   aBlocks: [],
@@ -57,7 +59,8 @@ export const cheomseongdae: Attraction = {
 export const woljeongyo: Attraction = {
   id: 'woljeongyo',
   name: '월정교',
-  description: 'A beautifully restored wooden bridge from the Silla era.',
+  guideTitle: 'Woljeonggyo',
+  description: 'A stunning wooden bridge renowned for its night views.',
   center: { lat: 35.82909, lng: 129.21707 },
   defaultZoom: 17,
   aBlocks: [
@@ -89,7 +92,8 @@ export const woljeongyo: Attraction = {
 export const gyochonMaeul: Attraction = {
   id: 'gyochon-maeul',
   name: '교촌마을',
-  description: 'A traditional hanok village, home to the historic Choe family estate.',
+  guideTitle: 'Gyochon Village',
+  description: 'A traditional hanok village',
   center: { lat: 35.83090, lng: 129.21620 },
   defaultZoom: 17,
   aBlocks: [
@@ -149,7 +153,8 @@ export const gyochonMaeul: Attraction = {
 export const donggungWolji: Attraction = {
   id: 'donggung-wolji',
   name: '동궁과월지',
-  description: 'A detached palace of the Silla Kingdom, famous for its stunning night scenery.',
+  guideTitle: 'Donggung Palace and Wolji Pond',
+  description: 'A mesmerizing royal pond famous for its flawless night reflections.',
   center: { lat: 35.8345, lng: 129.2247 },
   defaultZoom: 16,
   aBlocks: [
@@ -198,7 +203,8 @@ export const donggungWolji: Attraction = {
 export const bulguksa: Attraction = {
   id: 'bulguksa',
   name: '불국사',
-  description: 'A UNESCO World Heritage Site representing the pinnacle of Silla Buddhist architecture.',
+  guideTitle: 'Bulguksa Temple',
+  description: 'A UNESCO World Heritage Site and the finest example of Silla Buddhist architecture.',
   center: { lat: 35.7896, lng: 129.3316 },
   defaultZoom: 17,
   aBlocks: [
