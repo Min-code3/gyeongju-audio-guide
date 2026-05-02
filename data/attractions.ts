@@ -122,7 +122,7 @@ export const gyochonMaeul: Attraction = {
       radius: 30,
       pinType: 'spot',
       autoPlay: false, // C가이드 — GPS/클릭만, A 끝난 후 자동재생 없음
-      bBlock: { id: 'gc-duiju-b', src: '/audio/gc-duiju-b.mp3' },
+      bBlock: { id: 'gc-duiju-c', src: '/audio/gc-duiju-c.mp3' },
     },
     {
       id: 'gc-anchae',
@@ -132,7 +132,7 @@ export const gyochonMaeul: Attraction = {
       radius: 30,
       pinType: 'spot',
       autoPlay: false, // C가이드
-      bBlock: { id: 'gc-anchae-b', src: '/audio/gc-anchae-b.mp3' },
+      bBlock: { id: 'gc-anchae-c', src: '/audio/gc-anchae-c.mp3' },
     },
     {
       id: 'gc-photo',
