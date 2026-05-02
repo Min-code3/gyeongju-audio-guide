@@ -57,12 +57,6 @@ export default function TourMap({ attractions, center, defaultZoom, selectedId }
         <Marker
           key={attraction.id}
           position={attraction.center}
-          label={{
-            text: attraction.name,
-            fontSize: '11px',
-            fontWeight: attraction.id === selectedId ? 'bold' : 'normal',
-            color: '#1c1917',
-          }}
           icon={{
             path: CIRCLE,
             scale: attraction.id === selectedId ? 11 : 8,

@@ -114,7 +114,7 @@ function PlaylistPanel({ attraction, onClose }: { attraction: Attraction; onClos
                   onClick={() => { triggerPinManual(pin.id); onClose(); }}
                   className="w-full text-left px-3 py-2.5 rounded-xl mb-1 flex items-center gap-3 active:bg-stone-50">
                   <span className={`w-2 h-2 rounded-full shrink-0 ${visited ? 'bg-stone-300' : 'bg-amber-500'}`} />
-                  <span className={`text-sm ${visited ? 'text-stone-400' : 'text-stone-700'}`}>{pin.name}</span>
+                  <span className={`text-sm ${visited ? 'text-stone-400' : 'text-stone-700'}`}>{pin.bBlock?.title ?? pin.name}</span>
                   {visited && <span className="text-xs text-stone-300 ml-auto">Visited</span>}
                 </button>
               );
