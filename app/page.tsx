@@ -36,7 +36,7 @@ export default function HomePage() {
           href={`/guide/${bulguksa.id}`}
           className="block bg-white rounded-2xl px-5 py-5 shadow-sm active:bg-stone-50 transition-colors"
         >
-          <p className="text-base font-bold text-stone-800">{bulguksa.name}</p>
+          <p className="text-base font-bold text-stone-800">{bulguksa.guideTitle ?? bulguksa.name}</p>
           {bulguksa.description && (
             <p className="text-sm text-stone-400 mt-1">{bulguksa.description}</p>
           )}
