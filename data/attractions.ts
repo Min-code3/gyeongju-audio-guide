@@ -216,7 +216,7 @@ export const bulguksa: Attraction = {
       radius: 20,
       pinType: 'spot',
       autoPlay: false,
-      bBlock: { id: 'bk-cheonwangmun-b', src: '/audio/bk-cheonwangmun-b.mp3' },
+      bBlock: { id: 'bk-cheonwangmun-c', src: '/audio/bk-cheonwangmun-c.mp3' },
     },
     {
       id: 'bk-yaksuteo',
@@ -226,7 +226,7 @@ export const bulguksa: Attraction = {
       radius: 20,
       pinType: 'spot',
       autoPlay: false,
-      bBlock: { id: 'bk-yaksuteo-b', src: '/audio/bk-yaksuteo-b.mp3' },
+      bBlock: { id: 'bk-yaksuteo-c', src: '/audio/bk-yaksuteo-c.mp3' },
     },
     {
       id: 'bk-dabotap',
@@ -236,7 +236,7 @@ export const bulguksa: Attraction = {
       radius: 20,
       pinType: 'spot',
       autoPlay: false,
-      bBlock: { id: 'bk-dabotap-b', src: '/audio/bk-dabotap-b.mp3' },
+      bBlock: { id: 'bk-dabotap-c', src: '/audio/bk-dabotap-c.mp3' },
     },
     {
       id: 'bk-seokgatap',
@@ -246,7 +246,7 @@ export const bulguksa: Attraction = {
       radius: 20,
       pinType: 'spot',
       autoPlay: false,
-      bBlock: { id: 'bk-seokgatap-b', src: '/audio/bk-seokgatap-b.mp3' },
+      bBlock: { id: 'bk-seokgatap-c', src: '/audio/bk-seokgatap-c.mp3' },
     },
     // ── 루트 핀 (번호 있음) ────────────────────────────────────────
     {
@@ -259,7 +259,7 @@ export const bulguksa: Attraction = {
       autoPlay: false,
       routeOrder: 1,
       isMainRoute: true,
-      bBlock: { id: 'bk-baekungyo-b', src: '/audio/bk-baekungyo-b.mp3' },
+      bBlock: { id: 'bk-baekungyo-c', src: '/audio/bk-baekungyo-c.mp3' },
     },
     {
       id: 'bk-daewoongjeon',
@@ -271,7 +271,7 @@ export const bulguksa: Attraction = {
       autoPlay: false,
       routeOrder: 2,
       isMainRoute: true,
-      bBlock: { id: 'bk-daewoongjeon-b', src: '/audio/bk-daewoongjeon-b.mp3' },
+      bBlock: { id: 'bk-daewoongjeon-c', src: '/audio/bk-daewoongjeon-c.mp3' },
     },
     {
       id: 'bk-museoljeon',
@@ -283,7 +283,7 @@ export const bulguksa: Attraction = {
       autoPlay: false,
       routeOrder: 3,
       isMainRoute: false,
-      bBlock: { id: 'bk-museoljeon-b', src: '/audio/bk-museoljeon-b.mp3' },
+      bBlock: { id: 'bk-museoljeon-c', src: '/audio/bk-museoljeon-c.mp3' },
     },
     {
       id: 'bk-gwaneumjeon',
@@ -295,7 +295,7 @@ export const bulguksa: Attraction = {
       autoPlay: false,
       routeOrder: 4,
       isMainRoute: false,
-      bBlock: { id: 'bk-gwaneumjeon-b', src: '/audio/bk-gwaneumjeon-b.mp3' },
+      bBlock: { id: 'bk-gwaneumjeon-c', src: '/audio/bk-gwaneumjeon-c.mp3' },
     },
     {
       id: 'bk-saritap',
@@ -307,7 +307,7 @@ export const bulguksa: Attraction = {
       autoPlay: false,
       routeOrder: 5,
       isMainRoute: false,
-      bBlock: { id: 'bk-saritap-b', src: '/audio/bk-saritap-b.mp3' },
+      bBlock: { id: 'bk-saritap-c', src: '/audio/bk-saritap-c.mp3' },
     },
     {
       id: 'bk-geuktakjeon',
@@ -319,7 +319,7 @@ export const bulguksa: Attraction = {
       autoPlay: false,
       routeOrder: 6,
       isMainRoute: true,
-      bBlock: { id: 'bk-geuktakjeon-b', src: '/audio/bk-geuktakjeon-b.mp3' },
+      bBlock: { id: 'bk-geuktakjeon-c', src: '/audio/bk-geuktakjeon-c.mp3' },
     },
   ],
 };
