@@ -77,6 +77,13 @@ export default function TourPage() {
                   {attraction.description && (
                     <p className="text-sm text-stone-400 mt-0.5 line-clamp-2">{attraction.description}</p>
                   )}
+                  {(attraction.admission || attraction.hours) && (
+                    <p className="text-xs text-stone-400 mt-1">
+                      {attraction.admission && `🎫 ${attraction.admission}`}
+                      {attraction.admission && attraction.hours && '  '}
+                      {attraction.hours && `⏰ ${attraction.hours}`}
+                    </p>
+                  )}
                 </div>
                 <span className="text-amber-500 text-lg shrink-0">
                   {isSelected ? '→' : '›'}

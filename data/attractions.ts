@@ -5,8 +5,10 @@ export const daereungwon: Attraction = {
   name: '대릉원',
   guideTitle: 'Daereungwon',
   description: 'A historical park with 23 ancient tombs.',
-  center: { lat: 35.83851, lng: 129.21183 },
+  center: { lat: 35.838103, lng: 129.210827 },
   defaultZoom: 16,
+  admission: '(Partly) Free',
+  hours: '9:00 ~ 22:00',
   aBlocks: [
     { id: 'dr-a1', src: '/audio/dr-a1.mp3', title: 'Daereungwon' },
     { id: 'dr-a3', src: '/audio/dr-a3.mp3', title: 'Hill-like Tombs' },
@@ -16,8 +18,8 @@ export const daereungwon: Attraction = {
     {
       id: 'cheonmachong',
       name: '천마총',
-      lat: 35.83820,
-      lng: 129.21050,
+      lat: 35.838357,
+      lng: 129.210655,
       radius: 50,
       pinType: 'spot',
       bBlock: { id: 'dr-cheonmachong-b', src: '/audio/dr-cheonmachong-b.mp3', title: 'Cheonmachong' },
@@ -37,7 +39,9 @@ export const daereungwon: Attraction = {
 export const cheomseongdae: Attraction = {
   id: 'cheomseongdae',
   name: '첨성대',
-  guideTitle: 'Cheomseongdae',
+  guideTitle: '🌆 Cheomseongdae',
+  admission: 'Free',
+  hours: '9:00 ~ 22:00',
   description: "The oldest surviving observatory in the world, built during the reign of Silla's Queen Seondeok.",
   center: { lat: 35.83452, lng: 129.21900 },
   defaultZoom: 17,
@@ -70,8 +74,8 @@ export const woljeongyo: Attraction = {
     {
       id: 'wj-photo1',
       name: '포토스팟 1',
-      lat: 35.82891,
-      lng: 129.21774,
+      lat: 35.829046,
+      lng: 129.217317,
       radius: 0,
       pinType: 'photo',
       // 오디오 없음 — 지도 마커 전용
@@ -79,8 +83,8 @@ export const woljeongyo: Attraction = {
     {
       id: 'wj-photo2',
       name: '포토스팟 2',
-      lat: 35.82927,
-      lng: 129.21640,
+      lat: 35.829341,
+      lng: 129.216432,
       radius: 0,
       pinType: 'photo',
       // 오디오 없음 — 지도 마커 전용
@@ -93,7 +97,9 @@ export const gyochonMaeul: Attraction = {
   name: '교촌마을',
   guideTitle: 'Gyochon Village',
   description: 'A traditional hanok village',
-  center: { lat: 35.83090, lng: 129.21620 },
+  admission: 'Free',
+  hours: '9:00 ~ 18:00',
+  center: { lat: 35.829519, lng: 129.214833 },
   defaultZoom: 17,
   aBlocks: [
     { id: 'gc-a1', src: '/audio/gc-a1.mp3', title: 'Gyochon Village' },
@@ -152,9 +158,11 @@ export const gyochonMaeul: Attraction = {
 export const donggungWolji: Attraction = {
   id: 'donggung-wolji',
   name: '동궁과월지',
-  guideTitle: 'Donggung Palace and Wolji Pond',
+  guideTitle: '🌆 Donggung Palace and Wolji Pond',
   description: 'A mesmerizing royal pond famous for its flawless night reflections.',
-  center: { lat: 35.8345, lng: 129.2247 },
+  admission: '₩3,000',
+  hours: '9:00 ~ 22:00',
+  center: { lat: 35.834763, lng: 129.226555 },
   defaultZoom: 16,
   aBlocks: [
     { id: 'dw-a1', src: '/audio/dw-a1.mp3', title: 'Donggung Palace and Wolji Pond' },
@@ -204,6 +212,8 @@ export const bulguksa: Attraction = {
   name: '불국사',
   guideTitle: 'Bulguksa Temple',
   description: 'A UNESCO World Heritage Site and the finest example of Silla Buddhist architecture.',
+  admission: 'Free',
+  hours: '9:00 ~ 18:00',
   center: { lat: 35.7896, lng: 129.3316 },
   defaultZoom: 17,
   aBlocks: [

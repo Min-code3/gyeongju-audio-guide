@@ -22,6 +22,8 @@ export interface Attraction {
   name: string;
   description?: string;
   guideTitle?: string; // shown in audio guide player — falls back to name if not set
+  admission?: string; // e.g. "Free" or "₩3,000"
+  hours?: string;     // e.g. "9:00 ~ 22:00"
   center: { lat: number; lng: number };
   defaultZoom: number;
   aBlocks: AudioBlock[];

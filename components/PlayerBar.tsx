@@ -140,7 +140,15 @@ export default function PlayerBar({ attraction, onStart }: PlayerBarProps) {
       <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-xl px-6 pt-5 pb-10">
         <p className="text-xs text-stone-400 uppercase tracking-widest mb-1">Audio Guide</p>
         <p className="text-lg font-bold text-stone-800 mb-1">{displayName}</p>
-        <p className="text-sm text-stone-400 mb-6">{attraction.description}</p>
+        <p className="text-sm text-stone-400">{attraction.description}</p>
+        {(attraction.admission || attraction.hours) && (
+          <p className="text-xs text-stone-400 mt-1 mb-6">
+            {attraction.admission && `🎫 ${attraction.admission}`}
+            {attraction.admission && attraction.hours && '  '}
+            {attraction.hours && `⏰ ${attraction.hours}`}
+          </p>
+        )}
+        {!(attraction.admission || attraction.hours) && <div className="mb-6" />}
         <button onClick={onStart}
           className="w-full bg-amber-600 text-white rounded-2xl py-4 font-semibold text-base active:bg-amber-700 transition-colors">
           Start Audio Guide
