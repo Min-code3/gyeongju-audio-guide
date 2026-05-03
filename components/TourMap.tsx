@@ -9,6 +9,7 @@ interface TourMapProps {
   center: { lat: number; lng: number };
   defaultZoom: number;
   selectedId: string | null;
+  onPinClick: (attractionId: string) => void;
 }
 
 const MAP_STYLES = [
@@ -20,7 +21,7 @@ const MAP_STYLES = [
 
 const CIRCLE = 0 as unknown as google.maps.SymbolPath;
 
-export default function TourMap({ attractions, center, defaultZoom, selectedId }: TourMapProps) {
+export default function TourMap({ attractions, center, defaultZoom, selectedId, onPinClick }: TourMapProps) {
   const mapRef = useRef<google.maps.Map | null>(null);
 
   const { isLoaded } = useJsApiLoader({
@@ -60,11 +61,12 @@ export default function TourMap({ attractions, center, defaultZoom, selectedId }
           icon={{
             path: CIRCLE,
             scale: attraction.id === selectedId ? 11 : 8,
-            fillColor: attraction.id === selectedId ? '#d97706' : '#1d4ed8',
+            fillColor: attraction.id === selectedId ? '#f97316' : '#1d4ed8',
             fillOpacity: 1,
             strokeColor: '#ffffff',
             strokeWeight: 2,
           }}
+          onClick={() => onPinClick(attraction.id)}
         />
       ))}
     </GoogleMap>

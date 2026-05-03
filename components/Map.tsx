@@ -24,7 +24,7 @@ function pinIcon(pin: Pin, isActive: boolean, isVisited: boolean): google.maps.S
 
   if (pin.routeOrder !== undefined) {
     // Numbered circle — SVG
-    const color = isActive ? '#d97706' : (pin.isMainRoute !== false ? '#1d4ed8' : '#6b7280');
+    const color = isActive ? '#ea580c' : (pin.isMainRoute !== false ? '#f97316' : '#6b7280');
     const size = isActive ? 32 : 28;
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
       <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 1.5}" fill="${color}" stroke="white" stroke-width="2" opacity="${opacity}"/>

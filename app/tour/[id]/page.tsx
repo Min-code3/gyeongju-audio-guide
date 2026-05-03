@@ -43,6 +43,7 @@ export default function TourPage() {
           center={tour.center}
           defaultZoom={tour.defaultZoom}
           selectedId={selectedId}
+          onPinClick={handleCardTap}
         />
       </div>
 
