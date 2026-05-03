@@ -32,6 +32,7 @@ export interface Tour {
   id: string;
   name: string;
   description?: string;
+  tags?: string[]; // displayed as chips below the title
   center: { lat: number; lng: number };
   defaultZoom: number;
   attractions: Attraction[];
@@ -47,4 +48,5 @@ export interface UserPosition {
   lat: number;
   lng: number;
   accuracy: number;
+  heading?: number | null; // degrees from north, null if unavailable
 }

@@ -175,9 +175,7 @@ export default function PlayerBar({ attraction, onStart }: PlayerBarProps) {
   }
 
   // ── ACTIVE ─────────────────────────────────────────────────────────────────
-  const statusLabel = status === 'B_PLAYING'
-    ? `At · ${triggeredPin?.name}`
-    : `Segment ${aBlockIndex + 1} of ${attraction.aBlocks.length}`;
+  const statusLabel = status === 'B_PLAYING' ? `At · ${triggeredPin?.name}` : null;
 
   return (
     <>
@@ -185,7 +183,7 @@ export default function PlayerBar({ attraction, onStart }: PlayerBarProps) {
       <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-xl px-5 pt-4 pb-10">
         <div className="flex items-center justify-between mb-3">
           <div className="min-w-0 flex-1 pr-2">
-            <p className="text-xs text-amber-600 font-medium uppercase tracking-wide">{statusLabel}</p>
+            {statusLabel && <p className="text-xs text-amber-600 font-medium uppercase tracking-wide">{statusLabel}</p>}
             <p className="text-base font-bold text-stone-800 truncate">{displayName}</p>
           </div>
           <button onClick={() => setShowPlaylist(true)} className="text-stone-400 p-1 shrink-0">

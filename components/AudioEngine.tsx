@@ -21,8 +21,8 @@ export default function AudioEngine() {
 
     const watchId = navigator.geolocation.watchPosition(
       (pos) => {
-        const { latitude: lat, longitude: lng, accuracy } = pos.coords;
-        setUserPosition({ lat, lng, accuracy });
+        const { latitude: lat, longitude: lng, accuracy, heading } = pos.coords;
+        setUserPosition({ lat, lng, accuracy, heading });
 
         const { status: s, attraction: a, autoPlayEnabled, isPlaying, visitedPinIds } = useGuideStore.getState();
         if (!a) return;

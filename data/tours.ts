@@ -5,6 +5,7 @@ export const gyeongjuDowntown: Tour = {
   id: 'gyeongju-downtown',
   name: 'Gyeongju Downtown Walk',
   description: 'Walk through 1,000 years of Silla history in Gyeongju.',
+  tags: ['🌆 Night View'],
   center: { lat: 35.8360, lng: 129.2160 },
   defaultZoom: 14,
   attractions: [daereungwon, cheomseongdae, woljeongyo, gyochonMaeul, donggungWolji],

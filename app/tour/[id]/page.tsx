@@ -50,6 +50,15 @@ export default function TourPage() {
       {/* Header */}
       <div className="px-5 pt-4 pb-2 bg-stone-50">
         <h1 className="text-lg font-bold text-stone-800">{tour.name}</h1>
+        {tour.tags && tour.tags.length > 0 && (
+          <div className="flex gap-2 mt-1.5">
+            {tour.tags.map((tag) => (
+              <span key={tag} className="text-xs bg-amber-50 text-amber-700 border border-amber-200 rounded-full px-2.5 py-0.5">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Attraction list */}
