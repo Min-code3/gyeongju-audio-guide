@@ -7,7 +7,7 @@ export const daereungwon: Attraction = {
   description: 'A historical park with 23 ancient tombs.',
   center: { lat: 35.838103, lng: 129.210827 },
   defaultZoom: 16,
-  admission: '(Partly) Free',
+  admission: 'Free',
   hours: '9:00 ~ 22:00',
   aBlocks: [
     { id: 'dr-a1', src: '/audio/dr-a1.mp3', title: 'Daereungwon' },
