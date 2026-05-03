@@ -234,8 +234,8 @@ export const bulguksa: Attraction = {
     {
       id: 'bk-dabotap',
       name: '다보탑',
-      lat: 35.789984,
-      lng: 129.332284,
+      lat: 35.789981,
+      lng: 129.332288,
       radius: 15,
       pinType: 'spot',
       autoPlay: false,
