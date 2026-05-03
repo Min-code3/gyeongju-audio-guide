@@ -37,12 +37,28 @@ function pinIcon(pin: Pin, isActive: boolean, isVisited: boolean): google.maps.S
     };
   }
 
-  // Plain circle — no number
+  // Photo spot → blue diamond (SVG)
+  if (pin.pinType === 'photo') {
+    const color = isVisited ? '#9ca3af' : isActive ? '#d97706' : '#1d4ed8';
+    const size = isActive ? 22 : 18;
+    const c = size / 2;
+    const r = size / 2 - 1.5;
+    const pts = `${c},${c - r} ${c + r},${c} ${c},${c + r} ${c - r},${c}`;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
+      <polygon points="${pts}" fill="${color}" stroke="white" stroke-width="2" opacity="${opacity}"/>
+    </svg>`;
+    return {
+      url: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`,
+      scaledSize: new google.maps.Size(size, size),
+      anchor: new google.maps.Point(c, c),
+    };
+  }
+
+  // Tourist spot → orange circle
   return {
     path: CIRCLE_PATH,
     scale: isActive ? 11 : 8,
-    fillColor: isVisited ? '#9ca3af' : isActive ? '#d97706'
-      : pin.pinType === 'photo' ? '#10b981' : '#1d4ed8',
+    fillColor: isVisited ? '#9ca3af' : isActive ? '#d97706' : '#f97316',
     fillOpacity: opacity,
     strokeColor: '#ffffff',
     strokeWeight: 2,
