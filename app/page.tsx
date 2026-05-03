@@ -43,15 +43,17 @@ export default function HomePage() {
           <p className="text-xs text-amber-600 mt-3">Audio Guide</p>
         </Link>
 
-        {/* TEST card */}
-        <Link
-          href={`/guide/${bulguksaTest.id}`}
-          className="block bg-stone-200 rounded-2xl px-5 py-5 shadow-sm active:bg-stone-300 transition-colors"
-        >
-          <p className="text-base font-bold text-stone-600">{bulguksaTest.name}</p>
-          <p className="text-sm text-stone-400 mt-1">{bulguksaTest.description}</p>
-          <p className="text-xs text-stone-400 mt-3">GPS Test</p>
-        </Link>
+        {/* TEST card — hidden, keep for GPS testing */}
+        {false && (
+          <Link
+            href={`/guide/${bulguksaTest.id}`}
+            className="block bg-stone-200 rounded-2xl px-5 py-5 shadow-sm active:bg-stone-300 transition-colors"
+          >
+            <p className="text-base font-bold text-stone-600">{bulguksaTest.name}</p>
+            <p className="text-sm text-stone-400 mt-1">{bulguksaTest.description}</p>
+            <p className="text-xs text-stone-400 mt-3">GPS Test</p>
+          </Link>
+        )}
       </div>
     </main>
   );

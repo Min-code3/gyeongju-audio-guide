@@ -66,12 +66,10 @@ function PrevNextButtons() {
 
 // ── Playlist panel ─────────────────────────────────────────────────────────
 function PlaylistPanel({ attraction, onClose }: { attraction: Attraction; onClose: () => void }) {
-  const { aBlockIndex, status, visitedPinIds, triggerPinManual, prevBlock, nextBlock } = useGuideStore();
+  const { aBlockIndex, status, visitedPinIds, triggerPinManual, goToABlock } = useGuideStore();
 
   const goToBlock = (idx: number) => {
-    const diff = idx - aBlockIndex;
-    if (diff > 0) for (let i = 0; i < diff; i++) nextBlock();
-    else if (diff < 0) for (let i = 0; i < -diff; i++) prevBlock();
+    goToABlock(idx);
     onClose();
   };
 
@@ -183,7 +181,9 @@ export default function PlayerBar({ attraction, onStart }: PlayerBarProps) {
   }
 
   // ── ACTIVE ─────────────────────────────────────────────────────────────────
-  const statusLabel = status === 'B_PLAYING' ? `At · ${triggeredPin?.name}` : null;
+  const currentTitle = status === 'B_PLAYING'
+    ? (triggeredPin?.bBlock?.title ?? triggeredPin?.name ?? displayName)
+    : (attraction.aBlocks[aBlockIndex]?.title ?? displayName);
 
   return (
     <>
@@ -191,8 +191,7 @@ export default function PlayerBar({ attraction, onStart }: PlayerBarProps) {
       <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-xl px-5 pt-4 pb-10">
         <div className="flex items-center justify-between mb-3">
           <div className="min-w-0 flex-1 pr-2">
-            {statusLabel && <p className="text-xs text-amber-600 font-medium uppercase tracking-wide">{statusLabel}</p>}
-            <p className="text-base font-bold text-stone-800 truncate">{displayName}</p>
+            <p className="text-base font-bold text-stone-800 truncate">{currentTitle}</p>
           </div>
           <button onClick={() => setShowPlaylist(true)} className="text-stone-400 p-1 shrink-0">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">

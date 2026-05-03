@@ -73,7 +73,17 @@ export default function TourPage() {
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1 min-w-0 pr-3">
-                  <p className="text-base font-bold text-stone-800">{attraction.guideTitle ?? attraction.name}</p>
+                  {(() => {
+                    const title = attraction.guideTitle ?? attraction.name;
+                    const hasEmoji = title.startsWith('🌆');
+                    const text = hasEmoji ? title.slice(2) : title;
+                    return (
+                      <div className="flex items-center gap-1">
+                        <span className="text-base w-6 shrink-0 text-center">{hasEmoji ? '🌆' : ''}</span>
+                        <p className="text-base font-bold text-stone-800">{text}</p>
+                      </div>
+                    );
+                  })()}
                   {attraction.description && (
                     <p className="text-sm text-stone-400 mt-0.5 line-clamp-2">{attraction.description}</p>
                   )}

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { Attraction, GuideStatus, UserPosition } from './types';
+import { track } from './posthog';
 
 interface GuideStore {
   attraction: Attraction | null;
@@ -34,8 +35,9 @@ interface GuideStore {
   toggleAutoPlay: () => void;
 
   triggerPin: (pinId: string) => void;
-  triggerPinImmediate: (pinId: string) => void; // bypass pending — used when paused + auto ON
+  triggerPinImmediate: (pinId: string) => void;
   triggerPinManual: (pinId: string) => void;
+  goToABlock: (idx: number) => void;
 
   onABlockEnd: () => void;
   onBBlockEnd: () => void;
@@ -62,7 +64,11 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
   setDuration: (v) => set({ duration: v }),
 
   autoPlayEnabled: true,
-  toggleAutoPlay: () => set((s) => ({ autoPlayEnabled: !s.autoPlayEnabled })),
+  toggleAutoPlay: () => {
+    const next = !get().autoPlayEnabled;
+    track('autoplay_toggled', { enabled: next });
+    set({ autoPlayEnabled: next });
+  },
 
   seekTo: () => {},
   togglePause: () => {},
@@ -71,6 +77,7 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
   startGuide: () => {
     const { attraction } = get();
     if (!attraction) return;
+    track('guide_started', { attraction_id: attraction.id, attraction_name: attraction.name });
     if (attraction.aBlocks.length === 0) {
       // No A-guide — play first pin's B guide immediately
       const firstPin = attraction.pins[0];
@@ -129,6 +136,7 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
     const pin = attraction?.pins.find((p) => p.id === pinId);
     if (!pin?.bBlock) return;
     if (visitedPinIds.includes(pinId)) return;
+    track('pin_triggered', { pin_id: pinId, pin_name: pin.name, trigger: 'gps', attraction_id: attraction?.id });
 
     if (status === 'A_PLAYING') {
       set({ pendingPinId: pinId });
@@ -159,21 +167,23 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
   triggerPinManual: (pinId: string) => {
     const { attraction, status, visitedPinIds } = get();
     const pin = attraction?.pins.find((p) => p.id === pinId);
-    if (!pin?.bBlock) return; // marker-only pin, no audio
-    if (status === 'B_PLAYING') return;
+    if (!pin?.bBlock) return;
+    track('pin_triggered', { pin_id: pinId, pin_name: pin.name, trigger: 'manual', attraction_id: attraction?.id });
 
-    if (status === 'A_PLAYING') {
-      set({ pendingPinId: pinId });
-    } else {
-      set({
-        status: 'B_PLAYING',
-        triggeredPinId: pinId,
-        pendingPinId: null,
-        visitedPinIds: visitedPinIds.includes(pinId)
-          ? visitedPinIds
-          : [...visitedPinIds, pinId],
-      });
-    }
+    // Manual tap always plays immediately
+    set({
+      status: 'B_PLAYING',
+      triggeredPinId: pinId,
+      pendingPinId: null,
+      visitedPinIds: visitedPinIds.includes(pinId) ? visitedPinIds : [...visitedPinIds, pinId],
+    });
+  },
+
+  goToABlock: (idx: number) => {
+    const { attraction } = get();
+    if (!attraction) return;
+    if (idx < 0 || idx >= attraction.aBlocks.length) return;
+    set({ status: 'A_PLAYING', aBlockIndex: idx, triggeredPinId: null, pendingPinId: null });
   },
 
   onABlockEnd: () => {
@@ -204,6 +214,7 @@ export const useGuideStore = create<GuideStore>((set, get) => ({
           visitedPinIds: [...visitedPinIds, unvisited.id],
         });
       } else {
+        track('guide_completed', { attraction_id: attraction.id, attraction_name: attraction.name });
         set({ status: 'GUIDE_ENDED' });
       }
     }

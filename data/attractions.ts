@@ -39,7 +39,7 @@ export const daereungwon: Attraction = {
 export const cheomseongdae: Attraction = {
   id: 'cheomseongdae',
   name: '첨성대',
-  guideTitle: 'Cheomseongdae 🌆',
+  guideTitle: '🌆 Cheomseongdae',
   admission: 'Free',
   hours: '9:00 ~ 22:00',
   description: "The oldest surviving observatory in the world, built during the reign of Silla's Queen Seondeok.",
@@ -62,7 +62,7 @@ export const cheomseongdae: Attraction = {
 export const woljeongyo: Attraction = {
   id: 'woljeongyo',
   name: '월정교',
-  guideTitle: 'Woljeonggyo 🌆',
+  guideTitle: '🌆 Woljeonggyo',
   description: 'A stunning wooden bridge renowned for its night views.',
   center: { lat: 35.82909, lng: 129.21707 },
   defaultZoom: 17,
@@ -158,7 +158,7 @@ export const gyochonMaeul: Attraction = {
 export const donggungWolji: Attraction = {
   id: 'donggung-wolji',
   name: '동궁과월지',
-  guideTitle: 'Donggung Palace and Wolji Pond 🌆',
+  guideTitle: '🌆 Donggung Palace and Wolji Pond',
   description: 'A mesmerizing royal pond famous for its flawless night reflections.',
   admission: '₩3,000',
   hours: '9:00 ~ 22:00',
