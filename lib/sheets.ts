@@ -1,0 +1,118 @@
+import { google } from 'googleapis';
+
+const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
+
+function getAuth() {
+  return new google.auth.GoogleAuth({
+    credentials: {
+      client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+      private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    },
+    scopes: SCOPES,
+  });
+}
+
+async function getRows(sheetName: string): Promise<string[][]> {
+  const auth = getAuth();
+  const sheets = google.sheets({ version: 'v4', auth });
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId: process.env.GOOGLE_SHEETS_ID!,
+    range: `${sheetName}!A2:Z`,
+  });
+  return (res.data.values as string[][]) ?? [];
+}
+
+// ── Sheet: area ─────────────────────────────────────────────────────
+// nation | area | dec | area_en
+export interface AreaRow {
+  nation: string;
+  area: string;
+  description: string;
+  areaEn: string;
+}
+
+export async function getAreaRows(): Promise<AreaRow[]> {
+  const rows = await getRows('area');
+  return rows
+    .filter((r) => r[1])
+    .map((r) => ({
+      nation: r[0] ?? '',
+      area: r[1] ?? '',
+      description: r[2] ?? '',
+      areaEn: r[3] ?? '',
+    }));
+}
+
+// ── Sheet: attraction ───────────────────────────────────────────────
+// id | area | name | kor_content_id | eng_content_id | admission | defaultZoom | priority | star | tag_csv | tag_en | photo
+export interface AttractionRow {
+  id: string;
+  area: string;
+  name: string;
+  korContentId: string;
+  engContentId: string;
+  admission: string;
+  defaultZoom: number;
+  priority: number;
+  star: string;
+  tags: string[];
+}
+
+export async function getAttractionRows(): Promise<AttractionRow[]> {
+  const rows = await getRows('attraction');
+  return rows
+    .filter((r) => r[0] && r[2])
+    .map((r) => ({
+      id: r[0],
+      area: r[1] ?? '',
+      name: r[2] ?? '',
+      korContentId: r[3] ?? '',
+      engContentId: r[4] ?? '',
+      admission: r[5] ?? '',
+      defaultZoom: parseInt(r[6]) || 16,
+      priority: parseInt(r[7]) || 0,
+      star: r[8] ?? '',
+      tags: r[9] ? r[9].split(',').map((t) => t.trim()).filter(Boolean) : [],
+    }));
+}
+
+// ── Sheet: pinpoint ─────────────────────────────────────────────────
+// id | area | name | type | autoplay | pin_name | lat | lng | radius | routeOrder | isMainRoute | photo | audio_title | audio
+export interface PinpointRow {
+  id: string;
+  area: string;
+  attractionName: string;
+  type: 'A' | 'B' | 'C' | 'P';
+  autoplay: boolean;
+  pinName: string;
+  lat: number;
+  lng: number;
+  radius: number;
+  routeOrder?: number;
+  isMainRoute?: boolean;
+  photo: string;
+  audioTitle: string;
+  audioSrc: string;
+}
+
+export async function getPinpointRows(): Promise<PinpointRow[]> {
+  const rows = await getRows('pinpoint');
+  return rows
+    .filter((r) => r[0])
+    .map((r) => ({
+      id: r[0],
+      area: r[1] ?? '',
+      attractionName: r[2] ?? '',
+      type: (r[3] as 'A' | 'B' | 'C' | 'P') || 'B',
+      autoplay: r[4] !== 'FALSE',
+      pinName: r[5] ?? '',
+      lat: parseFloat(r[6]) || 0,
+      lng: parseFloat(r[7]) || 0,
+      radius: parseFloat(r[8]) || 0,
+      routeOrder: r[9] ? parseInt(r[9]) : undefined,
+      isMainRoute: r[10] === 'TRUE' ? true : r[10] === 'FALSE' ? false : undefined,
+      photo: r[11] ?? '',
+      audioTitle: r[12] ?? '',
+      audioSrc: r[13] ?? '',
+    }));
+}

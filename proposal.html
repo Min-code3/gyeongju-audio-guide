@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>2026 관광데이터 활용 공모전 제안서</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+      font-size: 13pt;
+      line-height: 1.8;
+      color: #111;
+      background: #f0f0f0;
+      padding: 30px 20px;
+    }
+
+    #toolbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: #1a56a0;
+      color: white;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 999;
+      font-size: 11pt;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    #toolbar span { opacity: 0.85; }
+    #toolbar button {
+      background: white;
+      color: #1a56a0;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 16px;
+      font-size: 11pt;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    #toolbar button:hover { background: #e8f0fb; }
+
+    #doc {
+      background: white;
+      max-width: 900px;
+      margin: 56px auto 0;
+      padding: 50px 65px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+      min-height: 1100px;
+    }
+
+    .title-box {
+      border: 2.5px solid #1a56a0;
+      padding: 18px 24px;
+      margin-bottom: 24px;
+    }
+    .title-box h1 {
+      font-size: 15pt;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .title-box .meta { font-size: 11pt; color: #333; line-height: 1.9; }
+
+    .section { margin-bottom: 28px; }
+    .section-header {
+      background: #1a56a0;
+      color: #fff;
+      font-size: 13pt;
+      font-weight: 700;
+      padding: 8px 14px;
+      margin-bottom: 14px;
+    }
+    .note { font-size: 10.5pt; color: #555; margin-bottom: 10px; }
+
+    .item { margin-bottom: 18px; }
+    .item-title {
+      font-weight: 700;
+      font-size: 12.5pt;
+      margin-bottom: 6px;
+      color: #1a56a0;
+    }
+    .item-body { padding-left: 16px; }
+
+    ul.bullets { list-style: none; padding-left: 0; }
+    ul.bullets li {
+      padding-left: 18px;
+      position: relative;
+      margin-bottom: 5px;
+    }
+    ul.bullets li::before { content: "·"; position: absolute; left: 6px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 11.5pt; margin: 10px 0; }
+    th { background: #e8f0fb; border: 1px solid #aac; padding: 7px 10px; font-weight: 700; text-align: center; }
+    td { border: 1px solid #aac; padding: 7px 10px; vertical-align: top; }
+    td.label { font-weight: 700; width: 22%; background: #f7f9fc; text-align: center; }
+
+    hr { border: none; border-top: 1px solid #ddd; margin: 18px 0; }
+
+    [contenteditable="true"] {
+      outline: none;
+      border-radius: 3px;
+      transition: background 0.15s;
+    }
+    [contenteditable="true"]:hover { background: #fffbe6; }
+    [contenteditable="true"]:focus { background: #fff9e0; box-shadow: 0 0 0 2px #f0c040; }
+
+    @media print {
+      #toolbar { display: none; }
+      body { background: white; padding: 0; }
+      #doc { margin: 0; padding: 20px 40px; box-shadow: none; }
+      [contenteditable="true"]:hover,
+      [contenteditable="true"]:focus { background: none; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="toolbar">
+  <span>✏️ 노란색으로 표시된 텍스트를 클릭하면 바로 수정 가능합니다.</span>
+  <button onclick="window.print()">🖨️ PDF로 저장</button>
+</div>
+
+<div id="doc">
+
+  <div class="title-box">
+    <h1>『2026 관광데이터 활용 공모전』<br>① 웹·앱 개발 부문 제안서</h1>
+    <div class="meta">
+      · 작성항목 및 양식 수정 금지, <strong>모든 항목 작성 필수</strong>, 이미지(사진), 표 등 삽입 가능<br>
+      · 분량: <strong>5페이지 이내</strong>로 작성(이미지, 표 등 일체 포함), 글자 포인트는 <strong>12포인트 이상</strong><br>
+      · 제출파일 형식: <strong>PDF(10MB 미만)</strong>
+    </div>
+  </div>
+
+
+  <!-- 1) 기획배경 -->
+  <div class="section">
+    <div class="section-header">1) 서비스 기획배경 및 필요성</div>
+    <p class="note">※ 서비스를 기획·구상하고 제안한 배경과 필요성 작성</p>
+
+    <div class="item">
+      <div class="item-title">1. 서비스 기획 배경</div>
+      <div class="item-body">
+        <ul class="bullets">
+          <li contenteditable="true"><strong>방한 관광객 동선 편중 문제 인식:</strong> 해외(일본) 현지 투어 가이드 실무 경험 분석을 통해, 방한 외국인 관광객의 여행 동선이 서울·부산 등 대도시 권역에 집중되는 경향을 확인하였음. 경주·전주·안동 등 풍부한 역사문화 자원을 보유한 지방 중소 거점 도시가 개별자유여행객(FIT)의 자율적 동선 내에서 충분히 체험되지 못하는 구조적 한계를 문제로 인식함.</li>
+          <li contenteditable="true"><strong>단체 관광(GIT) → 개별자유여행(FIT) 패러다임 전환:</strong> 최근 방한 관광 시장은 단체 관광(GIT) 중심에서 개별자유여행(FIT) 중심으로 수요 패러다임이 급속 전환되고 있음. 특히 체류 시간이 제한적인 지방 중소도시에서 반나절 이상의 일정을 요하는 기존 가이드 투어 방식은 FIT 여행객의 유연한 일정 운용과 상충하는 구조적 한계가 있음.</li>
+          <li contenteditable="true"><strong>기존 오디오 가이드의 사용자 경험(UX) 한계:</strong> 현행 오디오 가이드 서비스는 사용자가 각 명소에서 해당 해설을 직접 검색·선택·재생하여야 하는 조작 부담이 존재함. 이로 인해 이동 중 몰입감이 저해되며, 디지털 취약 계층을 포함한 다양한 연령층의 실질적 활용에 제약이 따름.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-title">2. 서비스 필요성</div>
+      <div class="item-body">
+        <ul class="bullets">
+          <li contenteditable="true"><strong>단체 투어와 기존 오디오 가이드의 중간 지점(Middle-ground) 수요 충족:</strong> 일정의 자유도가 제한되는 단체 가이드 투어와, 사용자가 능동적으로 해설을 탐색해야 하는 기존 오디오 가이드 사이의 공백 수요를 타겟팅함. GPS 기반 자동 재생을 통해 여행객이 이동만 하면 현장 맞춤형 해설이 자동 제공되는 '지능형 자율 여행 보조 서비스'를 구현함.</li>
+          <li contenteditable="true"><strong>스토리텔링 기반 정서적 현장 몰입 경험 창출:</strong> 단순 건축물 관람 수준을 넘어, 역사적 맥락(예: 불국사 다보탑의 단일 사자상 존재 이유, 무영탑 전설 등)을 현장에서 제공하는 맞춤형 오디오 콘텐츠를 통해 사전 영상 시청(유튜브 등)과 차별화된 현장 몰입감을 부여함. 단순 시각적 관람 체험을 감정적·역사적 경험으로 승화시켜 체류 만족도 및 재방문 의향을 제고함.</li>
+          <li contenteditable="true"><strong>공공데이터 연동을 통한 서비스 지속성 및 확장성 확보:</strong> 한국관광공사 OpenAPI 연동을 통해 관광 정보의 실시간 갱신 기반을 마련하고, 지속적인 명소 콘텐츠 확장이 가능한 구조로 설계함. 경주를 MVP 실증 거점으로 설정하여 서비스 모델을 검증한 후, 목포·전주·안동 등 타 지방 중소 거점 관광 도시로의 수평적 확산을 도모함.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 2) 서비스 개요 -->
+  <div class="section">
+    <div class="section-header">2) 서비스 개요</div>
+    <p class="note">※ 기획 서비스에 대한 소개 및 구현 예정인 주요 기능 위주로 작성<br>※ 지역 특화 서비스의 경우, 특화 지역 관련 내용 작성 필수</p>
+
+    <div class="item">
+      <div class="item-title">1. 기획 서비스 소개</div>
+      <div class="item-body">
+        <p contenteditable="true"><strong>GPS 위치 감지 기반 한국 중소도시 특화 도보 오디오 가이드 웹서비스</strong> — 스마트폰을 소지하고 이동하는 것만으로, 명소 반경 진입 시 현장 맞춤형 역사문화 해설이 자동 재생되는 비설치형(No-Install) 웹 기반 관광 안내 서비스.</p>
+        <p style="margin-top:8px;" contenteditable="true">서비스 URL: gyeongju-audio-guide.vercel.app &nbsp;|&nbsp; MVP 실증 거점: 경상북도 경주시</p>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-title">2. 기획 서비스 주요 기능</div>
+      <div class="item-body">
+        <table>
+          <tr><th style="width:26%">기능</th><th>내용</th></tr>
+          <tr>
+            <td class="label" contenteditable="true">GPS 자동 재생</td>
+            <td contenteditable="true">사용자가 명소 반경 내 진입 시 오디오 해설 자동 재생. 현재 재생 중인 가이드 순서와 무관하게, 반경 진입 즉시 해당 스팟의 적합한 해설로 자동 전환</td>
+          </tr>
+          <tr>
+            <td class="label" contenteditable="true">자동재생 On/Off</td>
+            <td contenteditable="true">GPS 자동재생 여부를 사용자가 직접 설정 가능. 자동재생 해제 시 지도 핀 수동 탭 방식으로 전환</td>
+          </tr>
+          <tr>
+            <td class="label" contenteditable="true">언어 선택</td>
+            <td contenteditable="true">가이드 해설 언어 선택 가능 (영어 제공 중, 한국어·일본어·중국어 순차 추가 예정)</td>
+          </tr>
+          <tr>
+            <td class="label" contenteditable="true">투어 코스 선택</td>
+            <td contenteditable="true">경주 도심 역사 코스(대릉원·첨성대·월정교·교촌마을·동궁과월지) / 불국사 사원 코스 중 선택 이용</td>
+          </tr>
+          <tr>
+            <td class="label" contenteditable="true">기본 해설<br>(타입 A)</td>
+            <td contenteditable="true">특정 장소에 구애받지 않는 명소 자체의 역사·문화 배경 해설. 이동 동선에 따라 순차 재생</td>
+          </tr>
+          <tr>
+            <td class="label" contenteditable="true">상세 해설<br>(타입 B)</td>
+            <td contenteditable="true">특정 명소 반경 진입 시 해당 장소에 특화된 상세 현장 해설 자동 재생</td>
+          </tr>
+          <tr>
+            <td class="label" contenteditable="true">지도 핀 수동 탭</td>
+            <td contenteditable="true">지도 위 핀을 직접 탭하여 원하는 스팟 해설 즉시 청취 가능</td>
+          </tr>
+          <tr>
+            <td class="label" contenteditable="true">플레이리스트</td>
+            <td contenteditable="true">전체 오디오 코스 목록 확인 및 원하는 세그먼트 선택 재생</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-title">3. 서비스 차별성</div>
+      <div class="item-body">
+        <ul class="bullets">
+          <li contenteditable="true"><strong>GPS 위치 기반 자동 전환 재생:</strong> 기존 오디오 가이드는 사용자가 명소마다 해설을 직접 재생하여야 하나, 본 서비스는 GPS 반경 진입만으로 현장 맞춤형 해설이 자동 재생됨. 현재 재생 중인 가이드의 순서와 무관하게, 반경 진입 즉시 해당 스팟에 적합한 해설로 자동 전환되어 이동 중 지속적인 몰입 경험을 제공함.</li>
+          <li contenteditable="true"><strong>포토스팟 현장 안내:</strong> 검색만으로는 발견하기 어려운 현지 인기 포토스팟을 지도 상에 별도 표시하여, 사진 촬영 명소를 놓치지 않도록 안내함.</li>
+          <li contenteditable="true"><strong>위치 기반 자동 지도 포커싱:</strong> 투어 코스 내 명소 선택 시, 해당 명소의 지도 위치로 자동 이동 및 포커싱 처리. 지리에 익숙하지 않은 방한 외래 관광객이 각 명소의 상대적 위치를 직관적으로 파악하고 효율적인 이동 동선을 계획할 수 있도록 지원함.</li>
+          <li contenteditable="true"><strong>데이터 기반 서비스 고도화:</strong> 사용자 행동 데이터(가이드 시작·완주율·핀 탭 빈도 등)를 수집·분석하여 콘텐츠 품질 및 동선 최적화에 지속 반영함.</li>
+          <li contenteditable="true"><strong>비설치형(No-Install) 즉시 이용:</strong> 앱스토어 설치 과정 없이 QR코드 접속만으로 iOS·Android 공통 즉시 이용 가능. PWA(Progressive Web App) 방식으로 홈 화면 추가 시 앱에 준하는 사용 환경 제공.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <hr>
+
+  <!-- 3) 데이터 활용 방안 -->
+  <div class="section">
+    <div class="section-header">3) 데이터 활용 방안 &nbsp;<span style="font-size:11pt;font-weight:400;">*한국관광공사 OpenAPI 활용 필수</span></div>
+
+    <div class="item">
+      <div class="item-title">1. 활용 예정 한국관광공사 OpenAPI</div>
+      <div class="item-body">
+        <table>
+          <tr><th>API명</th><th>활용 목적</th></tr>
+          <tr>
+            <td class="label" contenteditable="true">국문관광정보 서비스<br>(TourAPI 4.0)<br>areaBasedList</td>
+            <td contenteditable="true">경주 지역 관광지 목록 조회 — 명소별 기본 정보(명칭, 주소, 좌표, 대표이미지) 수집 및 서비스 내 명소 정보 카드 자동 구성</td>
+          </tr>
+          <tr>
+            <td class="label" contenteditable="true">관광지 상세정보 조회<br>detailCommon<br>detailIntro</td>
+            <td contenteditable="true">명소별 운영시간, 입장요금, 주차 정보 등 실무 정보를 서비스 내 안내 화면에 실시간 연동하여 수동 갱신 없이 최신 정보 유지</td>
+          </tr>
+          <tr>
+            <td class="label" contenteditable="true">위치기반 관광정보<br>locationBasedList</td>
+            <td contenteditable="true">사용자 현재 위치 기준 반경 내 추가 관광지 데이터 조회 — 신규 명소 추가 및 '근처 명소 추천' 기능 구현에 활용</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-title">2. 데이터 활용 방식</div>
+      <div class="item-body">
+        <ul class="bullets">
+          <li contenteditable="true"><strong>명소 운영 정보 실시간 연동:</strong> detailIntro API를 통해 각 명소의 운영시간·입장요금 정보를 자동 반영함으로써 정보 오류로 인한 여행객 불편을 방지하고 서비스 신뢰도를 제고함.</li>
+          <li contenteditable="true"><strong>신규 명소 콘텐츠 확장 기반 마련:</strong> areaBasedList API를 통해 경주 및 타 지역 관광지 데이터를 조회하고, 현장 답사 후 오디오 콘텐츠를 순차 탑재하는 구조적 확장 프로세스를 구축함.</li>
+          <li contenteditable="true"><strong>오디오 스크립트 품질 제고:</strong> detailCommon의 관광지 개요(overview) 데이터를 오디오 해설 스크립트 초안 작성의 기초 자료로 활용하여 정보 정확성을 담보함.</li>
+          <li contenteditable="true"><strong>위치 기반 주변 명소 추천:</strong> locationBasedList API와 사용자 GPS 좌표를 연동하여, 현재 위치 반경 내 미방문 관광지를 추천하는 기능을 구현할 예정임.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 4) 서비스 발전 방향 -->
+  <div class="section">
+    <div class="section-header">4) 서비스 발전 방향</div>
+    <p class="note">※ 기획 서비스 발전 가능성, 기대효과 등에 대해 작성</p>
+
+    <div class="item">
+      <div class="item-title">1. 개발 서비스 향후 발전방향</div>
+      <div class="item-body">
+        <table>
+          <tr><th style="width:26%">단계</th><th>내용</th></tr>
+          <tr>
+            <td class="label" contenteditable="true">경주 MVP<br>실증 및<br>데이터 확보</td>
+            <td contenteditable="true">· 경주를 MVP 거점으로 서비스 운영, 실사용자 행동 데이터 및 이용 후기 수집<br>· 수집된 데이터를 기반으로 UX 개선 및 콘텐츠 품질 고도화<br>· 중소도시 확장 시 적용할 운영 모델 및 콘텐츠 제작 프로세스 정립</td>
+          </tr>
+          <tr>
+            <td class="label" contenteditable="true">지방 중소도시<br>수평적 확산</td>
+            <td contenteditable="true">· 경주 실증 모델을 기반으로 전주·안동·목포·강릉 등 역사문화 중소 거점 도시로 서비스 확산<br>· TourAPI 전국 관광지 데이터 연동으로 콘텐츠 확장 속도 가속화<br>· 일본어·중국어 해설 추가로 방한 외래 관광객 주요 국적 대응</td>
+          </tr>
+          <tr>
+            <td class="label" contenteditable="true">광역 관광 클러스터<br>연계 및<br>종합 여행 편의<br>플랫폼 전환</td>
+            <td contenteditable="true">· 복수 도시를 연결하는 광역 관광 클러스터 코스 구성: 예) 경주-안동-경북 문화권 통합 코스<br>· 관광 해설 기능을 넘어 교통 이동 경로 안내 서비스로 기능 확장: 인천국제공항 → 서울 이동 방법, 경주 시내 교통 안내 등 GPS 기반 실시간 이동 가이드 제공<br>· 관광 안내와 교통 편의를 통합한 '원스톱 방한 여행 동반 서비스'로 발전시켜, 방한 외국인의 여행 편의성을 극대화하고 한국 관광 경쟁력 제고에 기여함</td>
+          </tr>
+        </table>
+
+        <p style="margin-top:14px; font-weight:700;">기대효과</p>
+        <ul class="bullets" style="margin-top:6px;">
+          <li contenteditable="true">개별자유여행객(FIT)의 지방 중소도시 방문 유인 강화 및 체류 시간 확대를 통한 지역 관광 경제 활성화 기여</li>
+          <li contenteditable="true">비설치형 웹 서비스 특성상 디지털 취약계층을 포함한 광범위한 이용자층 접근 가능</li>
+          <li contenteditable="true">한국관광공사 OpenAPI와의 지속적 연동으로 공공 관광 데이터의 실질적 활용도를 제고하고, 데이터 품질 기반 서비스 신뢰도 확보</li>
+          <li contenteditable="true">장기적으로 관광 안내와 교통 편의를 통합한 방한 여행 동반 플랫폼으로 성장하여, 한국 지방 관광의 접근성 및 국제 경쟁력 제고에 이바지함</li>
+        </ul>
+      </div>
+    </div>
+    </div>
+
+</div>
+
+</body>
+</html>

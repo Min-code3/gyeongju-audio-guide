@@ -1,0 +1,82 @@
+const BASE = process.env.TOUR_API_BASE!;
+const ENG_BASE = process.env.TOUR_API_ENG_BASE!;
+const KEY = process.env.TOUR_API_KEY!;
+
+interface TourAPIBasic {
+  title: string;
+  overview: string;
+  mapy: string;
+  mapx: string;
+  firstimage: string;
+}
+
+interface TourAPIIntro {
+  usetime: string;
+  restdate: string;
+}
+
+interface TourAPIInfo {
+  infoname: string;
+  infotext: string;
+}
+
+export interface TourAPIAttraction {
+  name: string;
+  description: string;
+  center: { lat: number; lng: number };
+  hours: string;
+  admission: string;
+  image: string;
+}
+
+async function fetchJSON(base: string, endpoint: string, params: Record<string, string>) {
+  const qs = new URLSearchParams({ serviceKey: KEY, MobileOS: 'ETC', MobileApp: 'KoreaGpsGuide', _type: 'json', ...params });
+  const res = await fetch(`${base}/${endpoint}?${qs}`, {
+    next: { revalidate: 3600 },
+  });
+  return res.json();
+}
+
+export async function getAttractionFromAPI(contentId: string, contentTypeId = '12'): Promise<TourAPIAttraction> {
+  const [common, intro, info] = await Promise.all([
+    fetchJSON(BASE, 'detailCommon2', { contentId }),
+    fetchJSON(BASE, 'detailIntro2', { contentId, contentTypeId }),
+    fetchJSON(BASE, 'detailInfo2', { contentId, contentTypeId }),
+  ]);
+
+  const c: TourAPIBasic = common.response.body.items.item[0];
+  const i: TourAPIIntro = intro.response.body.items?.item?.[0] ?? {};
+  const infoItems: TourAPIInfo[] = info.response.body.items?.item ?? [];
+
+  const admissionItem = infoItems.find((x) => x.infoname === '입장료');
+
+  return {
+    name: c.title,
+    description: c.overview,
+    center: { lat: parseFloat(c.mapy), lng: parseFloat(c.mapx) },
+    hours: i.usetime ?? '',
+    admission: admissionItem?.infotext ?? '',
+    image: c.firstimage ?? '',
+  };
+}
+
+export async function getAttractionFromEngAPI(contentId: string): Promise<TourAPIAttraction> {
+  const common = await fetchJSON(ENG_BASE, 'detailCommon2', { contentId });
+  const c: TourAPIBasic = common.response.body.items.item[0];
+
+  return {
+    name: c.title.replace(/\s*\(.*?\)\s*$/, ''),
+    description: c.overview,
+    center: { lat: parseFloat(c.mapy), lng: parseFloat(c.mapx) },
+    hours: '',
+    admission: '',
+    image: c.firstimage ?? '',
+  };
+}
+
+export async function getAttractionImages(contentId: string): Promise<string[]> {
+  const data = await fetchJSON(BASE, 'detailImage2', { contentId, imageYN: 'Y', numOfRows: '20' });
+  const items = data.response?.body?.items?.item ?? [];
+  const arr = Array.isArray(items) ? items : [items];
+  return arr.map((x: { originimgurl?: string }) => x.originimgurl).filter(Boolean) as string[];
+}
