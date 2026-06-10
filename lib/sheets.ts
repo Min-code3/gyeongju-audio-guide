@@ -2,11 +2,18 @@ import { google } from 'googleapis';
 
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
 
+function getPrivateKey() {
+  const key = process.env.GOOGLE_PRIVATE_KEY ?? '';
+  return key
+    .replace(/^["']|["']$/g, '')  // 앞뒤 따옴표 제거
+    .replace(/\\n/g, '\n');       // 리터럴 \n → 실제 줄바꿈
+}
+
 function getAuth() {
   return new google.auth.GoogleAuth({
     credentials: {
       client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-      private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      private_key: getPrivateKey(),
     },
     scopes: SCOPES,
   });
