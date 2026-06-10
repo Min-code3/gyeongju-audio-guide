@@ -1,4 +1,4 @@
-const BASE = process.env.TOUR_API_BASE!;
+const BASE = process.env.TOUR_API_KR_BASE!;
 const ENG_BASE = process.env.TOUR_API_ENG_BASE!;
 const KEY = process.env.TOUR_API_KEY!;
 
