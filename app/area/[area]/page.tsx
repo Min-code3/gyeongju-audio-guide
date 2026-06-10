@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getAttractionsByArea } from '@/lib/data';
+import { getTagRows } from '@/lib/sheets';
 import AreaPageClient from './AreaPageClient';
 import LangToggle from '@/components/LangToggle';
 
@@ -13,8 +14,14 @@ export default async function AreaPage({
   const [{ area }, { lang = 'ko' }] = await Promise.all([params, searchParams]);
   const decodedArea = decodeURIComponent(area);
 
-  const attractions = await getAttractionsByArea(decodedArea, lang as 'ko' | 'en');
+  const [attractions, tagRows] = await Promise.all([
+    getAttractionsByArea(decodedArea, lang as 'ko' | 'en'),
+    getTagRows(),
+  ]);
   if (attractions.length === 0) return notFound();
+
+  // { '🌆': 'Night View', ... }
+  const tagMap = Object.fromEntries(tagRows.map((t) => [t.tag, t.label]));
 
   const lats = attractions.map((a) => a.center.lat).filter(Boolean);
   const lngs = attractions.map((a) => a.center.lng).filter(Boolean);
@@ -31,7 +38,13 @@ export default async function AreaPage({
       <div className="absolute top-4 right-4 z-50">
         <LangToggle />
       </div>
-      <AreaPageClient area={decodedArea} lang={lang} attractions={attractions} center={center} />
+      <AreaPageClient
+        area={decodedArea}
+        lang={lang}
+        attractions={attractions}
+        tagMap={tagMap}
+        center={center}
+      />
     </>
   );
 }

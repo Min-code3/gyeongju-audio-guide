@@ -2,6 +2,10 @@ import { Attraction } from '@/lib/types';
 import { getAreaRows, getAttractionRows, getPinpointRows, AreaRow } from '@/lib/sheets';
 import { getAttractionFromAPI, getAttractionFromEngAPI, getAttractionImages } from '@/lib/tourapi';
 
+function toHttps(url: string) {
+  return url.replace(/^http:\/\//i, 'https://');
+}
+
 type Lang = 'ko' | 'en';
 
 function buildAttraction(
@@ -39,6 +43,7 @@ function buildAttraction(
     hours: apiData.hours,
     admission: row.admission || apiData.admission,
     defaultZoom: row.defaultZoom,
+    star: row.star || undefined,
     tags: row.tags,
     images,
     aBlocks,
@@ -46,19 +51,67 @@ function buildAttraction(
   };
 }
 
-async function fetchAPIData(row: { korContentId: string; engContentId: string }, lang: Lang) {
-  const contentId = lang === 'en' ? row.engContentId : row.korContentId;
-  const [apiData, images] = await Promise.all([
-    lang === 'en'
-      ? getAttractionFromEngAPI(contentId)
-      : getAttractionFromAPI(contentId),
-    getAttractionImages(row.korContentId), // 이미지는 항상 한국어 API (detailImage2는 KorService2만 지원)
+const FALLBACK_API: Awaited<ReturnType<typeof getAttractionFromAPI>> = {
+  name: '', description: '', center: { lat: 0, lng: 0 }, hours: '', admission: '', image: '',
+};
+
+async function fetchAPIData(row: { korContentId: string; engContentId: string; name: string }, lang: Lang) {
+  const fallback = { ...FALLBACK_API, name: row.name };
+
+  if (lang === 'ko') {
+    if (!row.korContentId) return { apiData: fallback, images: [] };
+    const [apiData, images] = await Promise.all([
+      getAttractionFromAPI(row.korContentId),
+      getAttractionImages(row.korContentId),
+    ]);
+    return { apiData, images };
+  }
+
+  // 영어: engContentId 없으면 korContentId로 폴백
+  const engId = row.engContentId || row.korContentId;
+  if (!engId) return { apiData: fallback, images: [] };
+
+  const [engData, images] = await Promise.all([
+    getAttractionFromEngAPI(engId),
+    row.korContentId ? getAttractionImages(row.korContentId) : Promise.resolve([]),
   ]);
-  return { apiData, images };
+
+  return { apiData: engData, images };
 }
 
 export async function getAreas(): Promise<AreaRow[]> {
   return getAreaRows();
+}
+
+// area별로 각 명소의 첫 번째 이미지를 1장씩 모아 반환
+// 시트에 명소 추가 → 자동으로 포함됨
+export async function getAreaCoverImages(): Promise<Record<string, string[]>> {
+  const attractionRows = await getAttractionRows();
+
+  // area별로 그룹핑 (priority 오름차순)
+  const grouped = attractionRows.reduce<Record<string, typeof attractionRows>>((acc, row) => {
+    if (!acc[row.area]) acc[row.area] = [];
+    acc[row.area].push(row);
+    return acc;
+  }, {});
+
+  const result: Record<string, string[]> = {};
+
+  await Promise.all(
+    Object.entries(grouped).map(async ([area, rows]) => {
+      const sorted = rows.sort((a, b) => a.priority - b.priority);
+      const images = await Promise.all(
+        sorted.map(async (row) => {
+          if (!row.korContentId) return '';
+          const imgs = await getAttractionImages(row.korContentId);
+          return imgs[0] ? toHttps(imgs[0]) : '';
+        }),
+      );
+      result[area] = images.filter(Boolean);
+    }),
+  );
+
+  return result;
 }
 
 export async function getAttractionsByArea(area: string, lang: Lang = 'ko'): Promise<Attraction[]> {

@@ -26,6 +26,7 @@ export interface Attraction {
   hours?: string;     // e.g. "9:00 ~ 22:00"
   center: { lat: number; lng: number };
   defaultZoom: number;
+  star?: string;
   tags?: string[];
   images?: string[];
   aBlocks: AudioBlock[];

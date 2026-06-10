@@ -76,6 +76,23 @@ export async function getAttractionRows(): Promise<AttractionRow[]> {
     }));
 }
 
+// ── Sheet: tag ──────────────────────────────────────────────────────
+// id | tag_csv | tag_en
+export interface TagRow {
+  tag: string;   // emoji key, matches values in attraction tag_csv
+  label: string; // display label e.g. "Night View"
+}
+
+export async function getTagRows(): Promise<TagRow[]> {
+  const rows = await getRows('tag');
+  return rows
+    .filter((r) => r[1])
+    .map((r) => ({
+      tag: r[1].trim(),
+      label: r[2]?.trim() ?? '',
+    }));
+}
+
 // ── Sheet: pinpoint ─────────────────────────────────────────────────
 // id | area | name | type | autoplay | pin_name | lat | lng | radius | routeOrder | isMainRoute | photo | audio_title | audio
 export interface PinpointRow {

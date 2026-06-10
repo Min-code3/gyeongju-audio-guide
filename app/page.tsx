@@ -1,6 +1,7 @@
-import Link from 'next/link';
-import { getAreas } from '@/lib/data';
+import { getAreas, getAreaCoverImages } from '@/lib/data';
+import { t } from '@/lib/i18n';
 import LangToggle from '@/components/LangToggle';
+import HomePageClient from '@/components/HomePageClient';
 
 export default async function HomePage({
   searchParams,
@@ -8,35 +9,21 @@ export default async function HomePage({
   searchParams: Promise<{ lang?: string }>;
 }) {
   const { lang = 'ko' } = await searchParams;
-  const areas = await getAreas();
+  const [areas, coverImages] = await Promise.all([
+    getAreas(),
+    getAreaCoverImages(),
+  ]);
 
   return (
     <main className="min-h-dvh bg-stone-50 px-5 pt-14 pb-10">
       <div className="flex items-start justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-stone-900 mb-1">Korea Audio Guide</h1>
-          <p className="text-sm text-stone-400">Walk at your own pace. The guide follows you.</p>
+          <h1 className="text-2xl font-bold text-stone-900 mb-1">{t(lang as 'ko' | 'en', 'home.title')}</h1>
+          <p className="text-sm text-stone-400">{t(lang as 'ko' | 'en', 'home.subtitle')}</p>
         </div>
         <LangToggle />
       </div>
-
-      <div className="flex flex-col gap-3">
-        {areas.map((area) => (
-          <Link
-            key={area.area}
-            href={`/area/${encodeURIComponent(area.area)}?lang=${lang}`}
-            className="block bg-white rounded-2xl px-5 py-5 shadow-sm active:bg-stone-50 transition-colors"
-          >
-            <p className="text-xs text-amber-600 uppercase tracking-widest font-medium mb-1">
-              {area.nation}
-            </p>
-            <p className="text-base font-bold text-stone-800">{area.area}</p>
-            {area.description && (
-              <p className="text-sm text-stone-400 mt-1">{area.description}</p>
-            )}
-          </Link>
-        ))}
-      </div>
+      <HomePageClient areas={areas} coverImages={coverImages} lang={lang} />
     </main>
   );
 }

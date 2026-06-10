@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Attraction } from '@/lib/types';
+import { t, Lang } from '@/lib/i18n';
 import { useGuideStore } from '@/lib/store';
 import { getAudio } from '@/lib/audioElement';
 
@@ -11,7 +12,7 @@ const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 const AudioEngine = dynamic(() => import('@/components/AudioEngine'), { ssr: false });
 const PlayerBar = dynamic(() => import('@/components/PlayerBar'), { ssr: false });
 
-export default function GuidePageClient({ attraction }: { attraction: Attraction }) {
+export default function GuidePageClient({ attraction, lang = 'ko' }: { attraction: Attraction; lang?: Lang }) {
   const router = useRouter();
   const { setAttraction, startGuide, userPosition, autoPlayEnabled, toggleAutoPlay } = useGuideStore();
   const [showPrompt, setShowPrompt] = useState(false);
@@ -39,7 +40,7 @@ export default function GuidePageClient({ attraction }: { attraction: Attraction
         onClick={() => router.back()}
         className="absolute top-4 left-4 z-50 bg-white rounded-full px-3 py-1.5 text-xs text-stone-600 shadow-md"
       >
-        ← Back
+        {t(lang, 'back')}
       </button>
 
       <button

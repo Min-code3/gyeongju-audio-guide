@@ -44,9 +44,10 @@ export async function getAttractionFromAPI(contentId: string, contentTypeId = '1
     fetchJSON(BASE, 'detailInfo2', { contentId, contentTypeId }),
   ]);
 
-  const c: TourAPIBasic = common.response.body.items.item[0];
-  const i: TourAPIIntro = intro.response.body.items?.item?.[0] ?? {};
-  const infoItems: TourAPIInfo[] = info.response.body.items?.item ?? [];
+  const c: TourAPIBasic = common.response?.body?.items?.item?.[0];
+  if (!c) throw new Error(`TourAPI: contentId ${contentId} not found`);
+  const i: TourAPIIntro = intro.response?.body?.items?.item?.[0] ?? {};
+  const infoItems: TourAPIInfo[] = info.response?.body?.items?.item ?? [];
 
   const admissionItem = infoItems.find((x) => x.infoname === '입장료');
 
@@ -61,14 +62,20 @@ export async function getAttractionFromAPI(contentId: string, contentTypeId = '1
 }
 
 export async function getAttractionFromEngAPI(contentId: string): Promise<TourAPIAttraction> {
-  const common = await fetchJSON(ENG_BASE, 'detailCommon2', { contentId });
-  const c: TourAPIBasic = common.response.body.items.item[0];
+  const [common, intro] = await Promise.all([
+    fetchJSON(ENG_BASE, 'detailCommon2', { contentId }),
+    fetchJSON(ENG_BASE, 'detailIntro2', { contentId, contentTypeId: '76' }),
+  ]);
+
+  const c: TourAPIBasic = common.response?.body?.items?.item?.[0];
+  if (!c) throw new Error(`TourAPI ENG: contentId ${contentId} not found`);
+  const i: TourAPIIntro = intro.response?.body?.items?.item?.[0] ?? {};
 
   return {
     name: c.title.replace(/\s*\(.*?\)\s*$/, ''),
     description: c.overview,
     center: { lat: parseFloat(c.mapy), lng: parseFloat(c.mapx) },
-    hours: '',
+    hours: i.usetime ?? '',
     admission: '',
     image: c.firstimage ?? '',
   };

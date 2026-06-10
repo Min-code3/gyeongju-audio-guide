@@ -18,20 +18,21 @@ function LangToggleInner() {
   };
 
   return (
-    <div className="flex items-center gap-1 bg-white rounded-full px-1 py-1 shadow-sm border border-stone-100">
+    <div className="relative flex items-center bg-stone-100 rounded-full p-0.5 text-xs font-medium">
+      {/* sliding indicator */}
+      <span
+        className="absolute top-0.5 bottom-0.5 w-[calc(50%-2px)] rounded-full bg-white shadow-sm transition-transform duration-200"
+        style={{ transform: lang === 'en' ? 'translateX(calc(100% + 4px))' : 'translateX(2px)' }}
+      />
       <button
         onClick={() => toggle('ko')}
-        className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-          lang === 'ko' ? 'bg-amber-500 text-white' : 'text-stone-400 hover:text-stone-600'
-        }`}
+        className={`relative z-10 px-3 py-1.5 rounded-full transition-colors duration-200 ${lang === 'ko' ? 'text-stone-800' : 'text-stone-400'}`}
       >
         한국어
       </button>
       <button
         onClick={() => toggle('en')}
-        className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-          lang === 'en' ? 'bg-amber-500 text-white' : 'text-stone-400 hover:text-stone-600'
-        }`}
+        className={`relative z-10 px-3 py-1.5 rounded-full transition-colors duration-200 ${lang === 'en' ? 'text-stone-800' : 'text-stone-400'}`}
       >
         English
       </button>
@@ -41,7 +42,7 @@ function LangToggleInner() {
 
 export default function LangToggle() {
   return (
-    <Suspense fallback={<div className="h-8 w-32 rounded-full bg-stone-100 animate-pulse" />}>
+    <Suspense fallback={<div className="h-8 w-36 rounded-full bg-stone-100 animate-pulse" />}>
       <LangToggleInner />
     </Suspense>
   );

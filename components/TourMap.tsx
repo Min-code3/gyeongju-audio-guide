@@ -24,7 +24,7 @@ const CIRCLE = 0 as unknown as google.maps.SymbolPath;
 export default function TourMap({ attractions, center, defaultZoom, selectedId, onPinClick }: TourMapProps) {
   const mapRef = useRef<google.maps.Map | null>(null);
 
-  const { isLoaded } = useJsApiLoader({
+  const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? '',
   });
 
@@ -36,6 +36,10 @@ export default function TourMap({ attractions, center, defaultZoom, selectedId, 
       mapRef.current.panTo(attraction.center);
     }
   }, [selectedId, attractions]);
+
+  if (loadError) {
+    return <div className="w-full h-full bg-stone-100 flex items-center justify-center text-stone-400 text-sm p-4 text-center">지도 로드 실패: {loadError.message}</div>;
+  }
 
   if (!isLoaded) {
     return <div className="w-full h-full bg-stone-100 flex items-center justify-center text-stone-400 text-sm">Loading map...</div>;
@@ -50,7 +54,7 @@ export default function TourMap({ attractions, center, defaultZoom, selectedId, 
         styles: MAP_STYLES,
         disableDefaultUI: true,
         zoomControl: true,
-        gestureHandling: 'greedy',
+        gestureHandling: 'cooperative',
       }}
       onLoad={(map) => { mapRef.current = map; }}
     >

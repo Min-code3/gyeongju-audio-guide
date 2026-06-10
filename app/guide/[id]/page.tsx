@@ -12,5 +12,5 @@ export default async function GuidePage({
   const [{ id }, { lang = 'ko' }] = await Promise.all([params, searchParams]);
   const attraction = await getAttractionById(id, lang as 'ko' | 'en');
   if (!attraction) return notFound();
-  return <GuidePageClient attraction={attraction} />;
+  return <GuidePageClient attraction={attraction} lang={lang as 'ko' | 'en'} />;
 }
